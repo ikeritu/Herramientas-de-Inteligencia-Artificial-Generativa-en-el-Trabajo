@@ -1,0 +1,42 @@
+CURSO "IA GENERATIVA PARA EL TRABAJO" · PAQUETE PARA CREAR LA APP ANDROID
+=========================================================================
+
+Contenido de esta carpeta
+- index.html              El curso (9 temas, 3 niveles, laboratorios, tests, examen final).
+- manifest.webmanifest    Datos de la app: nombre, colores e iconos.
+- sw.js                   Service worker: permite usarla sin conexión tras la primera visita.
+- icons/                  Iconos (192, 512 y maskable).
+- .nojekyll               Evita que GitHub Pages procese los archivos.
+
+PASO 1. Publicar la carpeta en GitHub Pages
+1. En github.com crea un repositorio público nuevo, por ejemplo "curso-ia".
+2. Sube TODO el contenido de esta carpeta a la raíz del repositorio
+   (incluida la carpeta icons y el archivo .nojekyll).
+3. En el repositorio: Settings > Pages > "Deploy from a branch" > rama main, carpeta /(root) > Save.
+4. Espera uno o dos minutos. La dirección será parecida a:
+   https://TU-USUARIO.github.io/curso-ia/
+5. Ábrela en el móvil. Si el navegador ofrece "Instalar app" o "Añadir a la pantalla de inicio",
+   la PWA ya funciona.
+
+PASO 2. Generar el .apk con PWABuilder
+1. Entra en https://www.pwabuilder.com e introduce la dirección del paso 1.
+2. Pulsa "Start" y revisa el informe: manifiesto, service worker y seguridad deberían salir bien.
+3. Elige "Package for stores" > Android.
+4. Revisa las opciones (nombre, identificador del paquete, versión) y deja que PWABuilder
+   cree una clave de firma nueva. GUARDA el archivo de clave y su contraseña: sin ellos no
+   podrás publicar actualizaciones de la misma app.
+5. Descarga el paquete. Dentro encontrarás un .apk (instalación directa) y un .aab (Google Play).
+   Las pantallas de PWABuilder cambian de vez en cuando: si algún nombre difiere, sigue su asistente.
+
+PASO 3. Instalar el .apk en el móvil
+1. Pasa el .apk al móvil (cable, nube o correo).
+2. Ábrelo y permite "instalar apps de orígenes desconocidos" cuando el sistema lo pida.
+3. Puede salir un aviso de Play Protect por ser una app que no viene de Google Play.
+
+NOTAS
+- Para publicar en Google Play necesitas una cuenta de desarrollador y subir el .aab.
+- El progreso del curso se guarda en el propio dispositivo (no se sincroniza entre móviles).
+- Si cambias el contenido de index.html, sube la nueva versión a GitHub; la app instalada
+  la recibirá al abrirse con conexión. Si cambias mucho, sube también el número de
+  CACHE en sw.js (por ejemplo, curso-ia-v2).
+- Este curso es divulgativo. Contrasta la normativa (EU AI Act) con las fuentes oficiales.

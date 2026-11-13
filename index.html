@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E2A2B">
+<meta name="description" content="Curso en 9 temas y 3 niveles sobre IA generativa en el ámbito profesional.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>IA Generativa Profesional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Idea de layout: columna de móvil con barra de pestañas inferior; cada lección es una pantalla corta con una idea clave resaltada. */
+:root{
+  --bg:#EDF1EF;
+  --surface:#FFFFFF;
+  --ink:#10211F;
+  --muted:#58706C;
+  --line:#D5DEDB;
+  --teal:#0B6E69;
+  --teal-soft:#D8EEEB;
+  --accent:#E8512B;
+  --accent-ink:#FFFFFF;
+  --sun:#F2B705;
+  --good:#1E8E55;
+  --good-soft:#DDF3E6;
+  --bad:#C7362B;
+  --bad-soft:#FBE3E0;
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1816;--surface:#13262A;--ink:#E6F0EE;--muted:#90ACA7;--line:#25403F;
+    --teal:#4CC9BF;--teal-soft:#16393A;--accent:#FF7650;--accent-ink:#1A0A05;--sun:#F6C73A;
+    --good:#4DD08B;--good-soft:#123A27;--bad:#FF8A7E;--bad-soft:#47201C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1816;--surface:#13262A;--ink:#E6F0EE;--muted:#90ACA7;--line:#25403F;
+  --teal:#4CC9BF;--teal-soft:#16393A;--accent:#FF7650;--accent-ink:#1A0A05;--sun:#F6C73A;
+  --good:#4DD08B;--good-soft:#123A27;--bad:#FF8A7E;--bad-soft:#47201C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input[type=range]{accent-color:var(--teal);min-height:32px}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#app{max-width:480px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);position:relative}
+@media (min-width:520px){#app{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+#main{flex:1;overflow-y:auto;padding:16px 16px 28px;scroll-behavior:smooth}
+h1,h2,h3{font-family:var(--display);line-height:1.12;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:34px;font-weight:800}
+h2{font-size:24px;font-weight:700;line-height:1.2}
+h3{font-size:18px;font-weight:700}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--teal)}
+.muted{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;align-items:center;gap:12px}
+.grow{flex:1;min-width:0}
+
+/* barra de pestañas */
+nav{display:flex;border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted)}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button[aria-current="page"]{color:var(--teal)}
+nav button[aria-current="page"] svg{stroke-width:2.3}
+
+/* cabecera interior */
+.topbar{display:flex;align-items:center;gap:8px;margin:-4px 0 14px}
+.back{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line)}
+.back svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* portada */
+.hero{background:var(--teal);color:#fff;border-radius:22px;padding:22px 20px 20px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .hero{background:#0E3B3C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero{background:#0E3B3C}}
+.hero .kicker{color:#BFEDE8}
+.hero h1{margin:6px 0 8px;font-size:32px}
+.hero p{color:#DDF4F1;font-size:15px;max-width:30ch}
+.hero .ring{position:absolute;right:14px;top:14px;width:68px;height:68px}
+.hero .cta{margin-top:16px}
+.ring text{font-family:var(--display);font-weight:800}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:14px;font-weight:700;background:var(--accent);color:var(--accent-ink);width:100%;text-align:center}
+.btn.alt{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{min-height:40px;width:auto;padding:0 14px;font-size:14px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.sec-title{display:flex;justify-content:space-between;align-items:baseline;margin:22px 2px 10px}
+.topic{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px}
+.topic .num{font-family:var(--display);font-weight:800;font-size:30px;line-height:1;width:42px;color:var(--teal);flex:none;text-align:center}
+.topic h3{font-size:16px;margin-bottom:4px}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .4s}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--teal-soft);color:var(--teal)}
+.chip.done{background:var(--good-soft);color:var(--good)}
+.chip.sun{background:#FFF1C2;color:#6B4E00}
+:root[data-theme="dark"] .chip.sun{background:#463A0E;color:var(--sun)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip.sun{background:#463A0E;color:var(--sun)}}
+
+/* lecciones */
+.segs{display:flex;gap:4px;margin-bottom:16px}
+.segs i{flex:1;height:5px;border-radius:99px;background:var(--line)}
+.segs i.on{background:var(--teal)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px 18px}
+.card h2{margin:4px 0 12px}
+.prose p{margin-bottom:12px}
+.prose ul,.prose ol{margin:0 0 12px 20px}
+.prose li{margin-bottom:6px}
+.prose b{font-weight:700}
+.prose code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--teal-soft);padding:1px 5px;border-radius:5px}
+.key{margin-top:14px;border-left:5px solid var(--sun);background:var(--bg);border-radius:6px 14px 14px 6px;padding:12px 14px;font-weight:500}
+.key b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.nav2{display:flex;gap:10px;margin-top:16px}
+.nav2 .btn{flex:1}
+.nav2 .btn.alt{flex:0 0 auto;width:auto;min-width:96px}
+.ex{background:var(--bg);border:1px dashed var(--line);border-radius:14px;padding:12px 14px;margin:0 0 12px;font-size:15px}
+.ex small{display:block;font-weight:700;color:var(--teal);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+
+/* quiz */
+.opt{display:block;width:100%;text-align:left;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);margin-bottom:10px;font-weight:500;min-height:52px}
+.opt:hover{border-color:var(--teal)}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}
+.opt.ko{border-color:var(--bad);background:var(--bad-soft)}
+.opt[disabled]{cursor:default}
+.why{margin:4px 0 12px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:15px}
+.score{font-family:var(--display);font-weight:800;font-size:72px;line-height:1;color:var(--teal)}
+
+/* tarjetas */
+.flip{perspective:1000px;width:100%;min-height:240px;display:block}
+.flip .face{min-height:240px;border-radius:22px;padding:24px 20px;display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:center}
+.flip .front{background:var(--teal);color:#fff}
+:root[data-theme="dark"] .flip .front{background:#0E3B3C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .flip .front{background:#0E3B3C}}
+.flip .back-face{background:var(--surface);border:1.5px solid var(--teal)}
+.flip .face small{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;opacity:.8}
+.flip .face p{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.25}
+.flip .back-face p{font-family:var(--body);font-size:17px;font-weight:500}
+.decks{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin:0 -16px 12px;padding-inline:16px;scrollbar-width:none}
+.decks::-webkit-scrollbar{display:none}
+.deck{flex:none;padding:8px 14px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;font-size:14px}
+.deck[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* labs */
+.field{display:block;margin-bottom:10px}
+.field span{display:block;font-weight:700;font-size:13px;margin-bottom:3px}
+.field span em{font-style:normal;font-weight:500;color:var(--muted)}
+textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical;min-height:54px}
+.meter{display:flex;gap:5px;margin:8px 0}
+.meter i{flex:1;height:8px;border-radius:99px;background:var(--line)}
+.meter i.on{background:var(--good)}
+.preview{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:14px;font-family:ui-monospace,Menlo,Consolas,monospace;min-height:60px}
+.scen{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;background:var(--surface)}
+.scen p{font-weight:600;margin-bottom:10px}
+.scen .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.scen .opts button{border:1.5px solid var(--line);border-radius:12px;padding:10px 8px;font-size:13px;font-weight:600;min-height:44px;background:var(--bg)}
+.scen .opts button.ok{border-color:var(--good);background:var(--good-soft)}
+.scen .opts button.ko{border-color:var(--bad);background:var(--bad-soft)}
+.scen .fb{margin-top:10px;font-size:14px;color:var(--muted)}
+.pyr{display:flex;flex-direction:column;gap:4px;margin:6px 0 14px}
+.pyr div{padding:9px 12px;border-radius:10px;font-size:14px;font-weight:600}
+.pyr .l1{background:#7A1F1A;color:#fff;margin:0 24%}
+.pyr .l2{background:#E8512B;color:#fff;margin:0 14%}
+.pyr .l3{background:#F2B705;color:#2B2000;margin:0 6%}
+.pyr .l4{background:#1E8E55;color:#fff}
+.tl{list-style:none;margin:0 0 12px!important;border-left:3px solid var(--teal);padding-left:14px}
+.tl li{margin-bottom:10px;position:relative}
+.tl li::before{content:"";position:absolute;left:-21px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--surface);border:3px solid var(--teal)}
+.tl b{display:block}
+.tl .now::before{background:var(--accent);border-color:var(--accent)}
+
+/* progreso */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat b{display:block;font-family:var(--display);font-size:30px;font-weight:800;line-height:1.1}
+.stat span{font-size:13px;color:var(--muted)}
+.prow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.prow:last-child{border-bottom:0}
+.small{font-size:13px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-weight:600;font-size:14px;z-index:5;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="main" tabindex="-1" aria-live="polite"></div>
+  <nav aria-label="Navegación principal">
+    <button data-act="tab" data-tab="home" aria-current="page"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Curso</button>
+    <button data-act="tab" data-tab="review"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>Repaso</button>
+    <button data-act="tab" data-tab="progress"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Progreso</button>
+  </nav>
+</div>
+
+<script>
+/* ============================== CONTENIDO ============================== */
+const COURSE = [
+/* ---------------------------------------------------------------- 1 */
+{ id:'t1', title:'Introducción a la IA y a la IA generativa', short:'Qué es la IA y cómo piensa una IAG', min:15,
+  summary:'Entiende qué hay detrás de la IA actual, en qué se diferencia la IA generativa y por qué se equivoca.',
+  lessons:[
+   { t:'¿Qué es la inteligencia artificial?', body:`
+     <p>La <b>inteligencia artificial (IA)</b> es el conjunto de técnicas que permiten a un sistema informático hacer tareas que asociamos a la inteligencia humana: reconocer imágenes, entender lenguaje, predecir, recomendar o tomar decisiones.</p>
+     <p>No es una cosa única. Hay tres capas que conviene distinguir:</p>
+     <ul><li><b>IA basada en reglas:</b> alguien escribe las normas («si pasa X, haz Y»).</li>
+     <li><b>Aprendizaje automático (machine learning):</b> el sistema aprende patrones a partir de datos.</li>
+     <li><b>Aprendizaje profundo (deep learning):</b> redes neuronales con muchas capas; es la base de la IA generativa.</li></ul>
+     <p>Ya la usas cada día: el filtro de spam, las recomendaciones de series, el desbloqueo facial o el corrector del móvil.</p>`,
+     key:'La IA no «sabe» cosas como una persona: detecta patrones en datos y los aplica.' },
+   { t:'Cómo aprende una máquina', body:`
+     <p>Casi todo el aprendizaje automático sigue el mismo ciclo:</p>
+     <ol><li><b>Datos:</b> ejemplos con los que practicar.</li><li><b>Entrenamiento:</b> el modelo ajusta millones de parámetros para acertar más.</li><li><b>Modelo:</b> el resultado del entrenamiento.</li><li><b>Inferencia:</b> usar el modelo con datos nuevos (lo que haces al chatear).</li></ol>
+     <p>Tres formas de aprender:</p>
+     <ul><li><b>Supervisado:</b> con ejemplos etiquetados (foto → «gato»).</li><li><b>No supervisado:</b> busca estructura sin etiquetas (agrupar clientes).</li><li><b>Por refuerzo:</b> prueba y error con recompensas.</li></ul>`,
+     key:'Si los datos de entrenamiento tienen sesgos o huecos, el modelo los hereda.' },
+   { t:'IA generativa y modelos de lenguaje', body:`
+     <p>La <b>IA generativa (IAG)</b> no solo clasifica o predice: <b>crea contenido nuevo</b> (texto, imágenes, audio, vídeo, código).</p>
+     <p>Los <b>LLM</b> (modelos de lenguaje de gran tamaño) están detrás de los chatbots. Su truco central es predecir cuál es el siguiente fragmento de texto más probable, uno detrás de otro. Esos fragmentos se llaman <b>tokens</b>.</p>
+     <ul><li><b>Ventana de contexto:</b> cuánto texto puede «tener delante» a la vez.</li><li><b>Temperatura:</b> cuánta variación admite al elegir (más alta = más creativa, menos predecible).</li><li><b>Multimodal:</b> entiende o genera varios formatos (texto + imagen + audio).</li></ul>`,
+     key:'Un LLM genera texto plausible, no necesariamente verdadero.' },
+   { t:'Límites: por qué la IA se equivoca', body:`
+     <p>Conocer los fallos típicos es la mejor protección:</p>
+     <ul><li><b>Alucinaciones:</b> inventa datos, citas o enlaces con total seguridad.</li><li><b>Sesgos:</b> reproduce estereotipos de los datos de origen.</li><li><b>Fecha de corte:</b> no conoce lo posterior a su entrenamiento, salvo que use búsqueda.</li><li><b>Falta de contexto:</b> solo sabe lo que le cuentas.</li><li><b>Inconsistencia:</b> la misma pregunta puede dar respuestas distintas.</li></ul>
+     <div class="ex"><small>Regla práctica</small>Cuanto más importante sea el resultado (cifras, leyes, salud, personas), más debes verificarlo en una fuente fiable.</div>`,
+     key:'La IA es un colaborador rápido pero no infalible. La responsabilidad final sigue siendo tuya.' }
+  ],
+  quiz:[
+   { q:'¿Qué distingue a la IA generativa de otros tipos de IA?', o:['Solo funciona con imágenes','Crea contenido nuevo (texto, imagen, audio…)','No necesita datos para entrenarse','Siempre acierta'], a:1, why:'La IAG genera contenido nuevo; otros sistemas se limitan a clasificar o predecir.' },
+   { q:'¿Qué hace básicamente un LLM al generar texto?', o:['Busca la respuesta en una base de datos de hechos','Copia párrafos de internet','Predice el siguiente token más probable','Razona con lógica formal siempre'], a:2, why:'Genera texto token a token según probabilidades aprendidas.' },
+   { q:'Una «alucinación» de la IA es…', o:['Una respuesta inventada pero que suena convincente','Un fallo de la batería','Una imagen borrosa','Una respuesta demasiado corta'], a:0, why:'Son datos, citas o hechos falsos presentados con seguridad.' },
+   { q:'¿Qué ocurre si los datos de entrenamiento están sesgados?', o:['El modelo los corrige solo','El modelo puede reproducir ese sesgo','No afecta a nada','El modelo se apaga'], a:1, why:'Los modelos heredan patrones, también los injustos.' },
+   { q:'La «inferencia» es…', o:['La fase de entrenar con millones de datos','Usar el modelo ya entrenado con datos nuevos','Borrar el modelo','Etiquetar datos'], a:1, why:'Cada vez que haces una pregunta al chatbot, el modelo hace inferencia.' }
+  ],
+  cards:[
+   ['IAG','IA generativa: sistemas que crean contenido nuevo (texto, imagen, audio, vídeo, código).'],
+   ['LLM','Modelo de lenguaje de gran tamaño: predice texto token a token.'],
+   ['Token','Fragmento de texto (una palabra o parte de ella) que procesa el modelo.'],
+   ['Alucinación','Respuesta inventada que parece verosímil.'],
+   ['Ventana de contexto','Cantidad de texto que el modelo puede considerar a la vez.']
+  ]
+},
+/* ---------------------------------------------------------------- 2 */
+{ id:'t2', title:'Ingeniería de prompts', short:'Tipos, diseño y validación', min:20,
+  summary:'Aprende a pedir bien: estructura, técnicas y cómo comprobar que tus instrucciones funcionan.',
+  lessons:[
+   { t:'Anatomía de un buen prompt', body:`
+     <p>Un <b>prompt</b> es la instrucción que das a la IA. Cuanto más claro, mejor resultado. Una estructura fiable tiene cinco piezas:</p>
+     <ul><li><b>Rol:</b> quién debe ser la IA («Eres un analista financiero»).</li><li><b>Tarea:</b> qué debe hacer, con un verbo claro.</li><li><b>Contexto:</b> datos, público, objetivo.</li><li><b>Formato:</b> cómo quieres la salida (tabla, 5 viñetas, 150 palabras).</li><li><b>Restricciones:</b> lo que debe evitar o respetar.</li></ul>
+     <div class="ex"><small>Mal</small>Hazme un correo para un cliente.</div>
+     <div class="ex"><small>Mejor</small>Eres responsable de atención al cliente. Redacta un correo de disculpa por un retraso de 3 días en un pedido. Tono cercano y profesional, máximo 120 palabras, sin prometer compensaciones.</div>`,
+     key:'Si una persona nueva en tu equipo no entendería la instrucción, la IA tampoco.' },
+   { t:'Tipos de prompts', body:`
+     <ul><li><b>Zero-shot:</b> pides sin ejemplos. Rápido, ideal para tareas simples.</li>
+     <li><b>Few-shot:</b> incluyes 2-3 ejemplos de entrada y salida para fijar el estilo.</li>
+     <li><b>Cadena de pensamiento:</b> pides razonar paso a paso antes de responder; útil en problemas con varios pasos. (Los modelos de razonamiento más recientes ya lo hacen internamente, así que no siempre hace falta.)</li>
+     <li><b>Role prompting:</b> asignas un rol o punto de vista.</li>
+     <li><b>Encadenado:</b> divides una tarea grande en prompts sucesivos (esquema → borrador → revisión).</li>
+     <li><b>Plantillas con variables:</b> prompts reutilizables con huecos como <code>[CLIENTE]</code> o <code>[TONO]</code>.</li></ul>`,
+     key:'Empieza simple. Añade ejemplos o pasos solo si el resultado no te convence.' },
+   { t:'Laboratorio: construye tu prompt', lab:'prompt', body:`<p>Rellena los cinco bloques y mira cómo se ensambla el prompt. Cuantos más bloques completes, más sólida será la instrucción.</p>`,
+     key:'Estructurar el prompt cuesta un minuto y ahorra varias vueltas de corrección.' },
+   { t:'Validar y mejorar tus instrucciones', body:`
+     <p>Un prompt no está terminado cuando «funciona una vez». Para validarlo:</p>
+     <ol><li><b>Define qué es un buen resultado:</b> precisión, tono, longitud, formato.</li><li><b>Pruébalo con varios casos</b>, incluidos los difíciles.</li><li><b>Compara versiones</b> cambiando una sola cosa cada vez.</li><li><b>Verifica los hechos</b> con fuentes y pide que indique qué no sabe.</li><li><b>Guarda las versiones buenas</b> en una biblioteca de prompts.</li></ol>
+     <p><b>Seguridad:</b> no pegues datos confidenciales y ten cuidado con textos externos que contengan órdenes ocultas («prompt injection»).</p>`,
+     key:'Itera: probar, medir, ajustar. Un buen prompt se construye, no se adivina.' }
+  ],
+  quiz:[
+   { q:'¿Cuál NO es parte de la estructura básica rol-tarea-contexto-formato-restricciones?', o:['Rol','Formato','Contraseña','Restricciones'], a:2, why:'La contraseña nunca forma parte de un prompt, y menos aún datos sensibles.' },
+   { q:'El prompting «few-shot» consiste en…', o:['Hacer preguntas muy cortas','Incluir algunos ejemplos en el propio prompt','Pedir la respuesta en pocas palabras','Usar pocos tokens'], a:1, why:'Los ejemplos de entrada y salida guían el estilo y el formato.' },
+   { q:'Para validar un prompt conviene…', o:['Probarlo una vez','Probarlo con varios casos y comparar versiones','Hacerlo más largo siempre','No tocarlo nunca'], a:1, why:'La validación requiere varios casos y cambios controlados.' },
+   { q:'¿Qué es un prompt encadenado?', o:['Un prompt con muchas mayúsculas','Dividir una tarea en varios prompts sucesivos','Un prompt que se repite','Un prompt bloqueado'], a:1, why:'Por ejemplo: esquema, luego borrador, luego revisión.' },
+   { q:'¿Qué mejora más un prompt flojo como «Escribe un informe»?', o:['Añadir contexto, formato y público','Escribirlo en mayúsculas','Repetirlo tres veces','Quitar el verbo'], a:0, why:'Contexto, formato y público reducen la ambigüedad.' }
+  ],
+  cards:[
+   ['Prompt','Instrucción que se da a la IA.'],
+   ['Zero-shot / Few-shot','Sin ejemplos / con algunos ejemplos incluidos en el prompt.'],
+   ['Cadena de pensamiento','Pedir razonamiento paso a paso antes de la respuesta.'],
+   ['Prompt injection','Texto oculto o malicioso que intenta cambiar las instrucciones de la IA.'],
+   ['Plantilla de prompt','Prompt reutilizable con variables entre corchetes.']
+  ]
+},
+/* ---------------------------------------------------------------- 3 */
+{ id:'t3', title:'Marco regulatorio europeo: EU AI Act', short:'Reglamento (UE) 2024/1689', min:20,
+  summary:'Los principios de la ley europea de IA: niveles de riesgo, calendario y qué implica para ti.',
+  lessons:[
+   { t:'Qué es el EU AI Act', body:`
+     <p>El <b>Reglamento (UE) 2024/1689</b>, conocido como <b>AI Act</b>, es la primera ley integral sobre IA. Entró en vigor el <b>1 de agosto de 2024</b> y se aplica por fases.</p>
+     <ul><li><b>Enfoque basado en riesgo:</b> a más riesgo para las personas, más obligaciones.</li><li><b>Alcance:</b> afecta a quienes desarrollan (proveedores) y a quienes usan IA en su actividad profesional (responsables del despliegue), también fuera de la UE si el resultado se usa en la UE.</li><li><b>Objetivo:</b> una IA fiable, centrada en las personas, que proteja la salud, la seguridad y los derechos fundamentales.</li></ul>`,
+     key:'No regula «la IA» en general, sino los usos según el riesgo que suponen.' },
+   { t:'La pirámide de riesgo', body:`
+     <div class="pyr"><div class="l1">Inaceptable: prohibido</div><div class="l2">Alto riesgo: requisitos estrictos</div><div class="l3">Riesgo limitado: transparencia</div><div class="l4">Riesgo mínimo: sin obligaciones</div></div>
+     <ul><li><b>Prohibido:</b> puntuación social, manipulación que cause daño, explotación de vulnerabilidades, ciertos usos de identificación biométrica y reconocimiento de emociones en trabajo y educación, entre otros.</li>
+     <li><b>Alto riesgo:</b> IA en empleo (selección de personal), educación, acceso a servicios esenciales, crédito, justicia, infraestructuras críticas…</li>
+     <li><b>Transparencia:</b> chatbots, contenido sintético y deepfakes.</li>
+     <li><b>Mínimo:</b> filtros de spam, videojuegos…</li></ul>
+     <p>Aparte, los <b>modelos de IA de propósito general</b> (los que hay detrás de los chatbots) tienen obligaciones propias de documentación, copyright y, en los más potentes, gestión de riesgos sistémicos.</p>`,
+     key:'Tu obligación depende de para qué usas la IA, no de qué herramienta es.' },
+   { t:'Calendario de aplicación', body:`
+     <ul class="tl">
+      <li><b>1 ago 2024</b>Entrada en vigor.</li>
+      <li><b>2 feb 2025</b>Prohibiciones y obligación de alfabetización en IA (art. 4).</li>
+      <li><b>2 ago 2025</b>Obligaciones para modelos de propósito general y gobernanza.</li>
+      <li><b>2 ago 2026</b>Aplicación general y obligaciones de transparencia (art. 50).</li>
+      <li class="now"><b>2 dic 2026</b>Fin del plazo adicional para el marcado legible por máquina en sistemas generativos ya comercializados.</li>
+      <li><b>2 dic 2027</b>Alto riesgo de uso independiente (anexo III), aplazado por el «Ómnibus digital».</li>
+      <li><b>2 ago 2028</b>Alto riesgo integrado en productos regulados (anexo I).</li>
+     </ul>
+     <p class="muted small">Calendario según fuentes jurídicas consultadas en noviembre de 2026, tras el aplazamiento de las obligaciones de alto riesgo. Las fechas pueden precisarse: contrasta siempre con el texto oficial en EUR-Lex.</p>`,
+     key:'El aplazamiento afectó al alto riesgo. La transparencia y las prohibiciones siguen su curso.' },
+   { t:'Qué implica para tu trabajo', body:`
+     <ul><li><b>Alfabetización en IA (art. 4):</b> las organizaciones deben procurar que su personal tenga formación suficiente para usar IA. Este curso va justo en esa línea.</li>
+     <li><b>Transparencia (art. 50):</b> avisar de que se interactúa con una IA, marcar el contenido sintético y etiquetar los deepfakes. Los textos generados por IA publicados para informar al público sobre asuntos de interés general también deben indicarlo, salvo que haya revisión y responsabilidad editorial humana.</li>
+     <li><b>Sanciones:</b> hasta 35 M€ o el 7 % de la facturación por prácticas prohibidas; hasta 15 M€ o el 3 % por incumplir la mayoría de obligaciones, incluidas las de transparencia.</li>
+     <li><b>Si usas IA en RRHH, educación o crédito:</b> probablemente sea alto riesgo; consulta con el área legal de tu organización.</li></ul>
+     <div class="ex"><small>Ojo</small>Esto es una introducción divulgativa, no asesoramiento jurídico.</div>`,
+     key:'Como mínimo: forma a tu equipo, avisa cuando haya IA y revisa lo que publicas.' },
+   { t:'Laboratorio: clasifica el riesgo', lab:'risk', body:`<p>Elige el nivel de riesgo que, según el AI Act, corresponde a cada uso. Es una clasificación orientativa.</p>`,
+     key:'Para clasificar, pregúntate: ¿puede afectar a derechos, empleo, educación o seguridad de una persona?' }
+  ],
+  quiz:[
+   { q:'El AI Act regula la IA según…', o:['La marca del fabricante','El nivel de riesgo del uso','El país de origen','El precio'], a:1, why:'Es un enfoque basado en riesgo.' },
+   { q:'¿Qué nivel tiene un sistema de IA que filtra currículums?', o:['Mínimo','Limitado','Alto riesgo','Prohibido siempre'], a:2, why:'La selección de personal está en el listado de alto riesgo.' },
+   { q:'La obligación de alfabetización en IA (art. 4) se aplica desde…', o:['Febrero de 2025','Agosto de 2028','Diciembre de 2027','Nunca'], a:0, why:'Junto con las prohibiciones, desde el 2 de febrero de 2025.' },
+   { q:'Un chatbot de atención al cliente debe…', o:['Ocultar que es IA','Informar al usuario de que habla con una IA','Estar prohibido','Cobrar tasa'], a:1, why:'Es una obligación de transparencia (art. 50).' },
+   { q:'¿Qué obligaciones se aplazaron hasta diciembre de 2027?', o:['Las prohibiciones','Las de transparencia','Las de alto riesgo del anexo III','Todas'], a:2, why:'El aplazamiento afectó al alto riesgo, no a prohibiciones ni a transparencia.' }
+  ],
+  cards:[
+   ['AI Act','Reglamento (UE) 2024/1689 sobre inteligencia artificial.'],
+   ['Proveedor / Responsable del despliegue','Quien desarrolla el sistema / quien lo usa en su actividad profesional.'],
+   ['Alto riesgo','IA con impacto en derechos o seguridad (empleo, educación, crédito…); requisitos estrictos.'],
+   ['Art. 50','Obligaciones de transparencia: chatbots, contenido sintético y deepfakes.'],
+   ['Art. 4','Alfabetización en IA del personal.']
+  ]
+},
+/* ---------------------------------------------------------------- 4 */
+{ id:'t4', title:'Posibilidades, ética y riesgos', short:'Uso responsable en el trabajo', min:15,
+  summary:'Qué puedes conseguir con la IAG, qué puede salir mal y cómo decidir si usarla en cada caso.',
+  lessons:[
+   { t:'Qué posibilidades abre', body:`
+     <ul><li><b>Productividad:</b> borradores, resúmenes y tareas repetitivas en minutos.</li><li><b>Creatividad:</b> lluvia de ideas, variantes, primeras versiones visuales.</li><li><b>Análisis:</b> explorar datos, extraer información de documentos largos.</li><li><b>Comunicación:</b> traducción, adaptación de tono, accesibilidad.</li><li><b>Aprendizaje:</b> tutor disponible 24 h para dudas.</li></ul>
+     <p>La clave es usarla como <b>asistente</b>: te acelera el primer 80 %, tú aportas criterio y revisión.</p>`,
+     key:'La IA multiplica tu capacidad, no sustituye tu responsabilidad.' },
+   { t:'Riesgos principales', body:`
+     <ul><li><b>Información falsa:</b> alucinaciones y deepfakes.</li><li><b>Sesgos y discriminación</b> en textos, imágenes y decisiones.</li><li><b>Privacidad (RGPD):</b> datos personales introducidos en herramientas externas.</li><li><b>Confidencialidad:</b> secretos comerciales pegados en un chat público.</li><li><b>Propiedad intelectual:</b> dudas sobre los datos de entrenamiento y la titularidad de lo generado.</li><li><b>Seguridad:</b> prompt injection, suplantación, phishing más convincente.</li><li><b>Dependencia:</b> perder habilidades y espíritu crítico.</li><li><b>Impacto ambiental:</b> entrenar y ejecutar modelos consume energía.</li></ul>`,
+     key:'El riesgo más común no es técnico: es pegar datos que no debías o no revisar lo generado.' },
+   { t:'Principios de un uso ético', body:`
+     <ul><li><b>Supervisión humana:</b> una persona revisa y decide.</li><li><b>Transparencia:</b> avisa cuando el contenido o la interacción es de IA.</li><li><b>Responsabilidad:</b> tú firmas lo que publicas, lo haya escrito quien lo haya escrito.</li><li><b>Justicia:</b> comprueba que no discrimine a nadie.</li><li><b>Privacidad:</b> minimiza datos personales, anonimiza.</li><li><b>Veracidad:</b> contrasta antes de difundir.</li></ul>`,
+     key:'Pregúntate: ¿me sentiría cómodo explicando a mi cliente o jefe cómo usé la IA?' },
+   { t:'Semáforo antes de usar IA', body:`
+     <div class="ex"><small>Verde</small>Datos públicos o inventados: ideas, borradores genéricos, formación, resúmenes de textos públicos.</div>
+     <div class="ex"><small>Ámbar</small>Información interna no crítica: usa herramientas aprobadas por tu organización, anonimiza y revisa con cuidado.</div>
+     <div class="ex"><small>Rojo</small>Datos personales sensibles, secretos, contratos confidenciales, decisiones sobre personas sin supervisión: no sin autorización y salvaguardas.</div>
+     <p>Antes de empezar, comprueba tres cosas: <b>política de tu empresa</b>, <b>qué datos entran</b> y <b>quién revisa la salida</b>.</p>`,
+     key:'Ante la duda sobre datos, pregunta antes de pegar.' }
+  ],
+  quiz:[
+   { q:'¿Cuál es la mejor actitud al usar la IA en el trabajo?', o:['Aceptar todo lo que dice','Usarla como asistente y revisar siempre','Prohibirla siempre','Ocultar que la usas'], a:1, why:'Asistente con supervisión humana.' },
+   { q:'¿Qué dato NO deberías pegar en un chat público sin autorización?', o:['Un texto de dominio público','Una lista de clientes con datos personales','Una pregunta general','Un tema para un post'], a:1, why:'Datos personales y confidenciales requieren herramientas y permisos adecuados.' },
+   { q:'Un principio ético clave es…', o:['La opacidad','La supervisión humana','La velocidad sobre todo','El anonimato del autor'], a:1, why:'Una persona debe poder revisar y responder del resultado.' },
+   { q:'¿Quién responde del contenido publicado con ayuda de IA?', o:['La IA','El fabricante','La persona u organización que lo publica','Nadie'], a:2, why:'La responsabilidad es de quien publica.' },
+   { q:'Un riesgo de seguridad específico de la IAG es…', o:['El prompt injection','El brillo de la pantalla','La memoria RAM','El teclado'], a:0, why:'Instrucciones ocultas en textos externos pueden manipular a la IA.' }
+  ],
+  cards:[
+   ['Supervisión humana','Una persona revisa y valida lo que genera la IA.'],
+   ['Sesgo','Tendencia sistemática que favorece o perjudica a ciertos grupos.'],
+   ['RGPD','Reglamento europeo de protección de datos personales.'],
+   ['Deepfake','Contenido sintético realista que imita a una persona real.'],
+   ['Semáforo de datos','Verde público, ámbar interno, rojo sensible o confidencial.']
+  ]
+},
+/* ---------------------------------------------------------------- 5 */
+{ id:'t5', title:'IAG para generar texto', short:'Redacción, resumen y análisis', min:15,
+  summary:'Herramientas y flujos para escribir, resumir, traducir y extraer información con IA.',
+  lessons:[
+   { t:'Qué puedes hacer con texto', body:`
+     <ul><li><b>Redactar:</b> correos, informes, propuestas, publicaciones.</li><li><b>Resumir:</b> documentos largos, reuniones, artículos.</li><li><b>Reescribir:</b> cambiar tono, simplificar, acortar.</li><li><b>Traducir y localizar.</b></li><li><b>Extraer datos:</b> pasar un texto desordenado a tabla.</li><li><b>Ideación:</b> titulares, enfoques, preguntas para una entrevista.</li></ul>`,
+     key:'Los LLM son especialmente buenos transformando texto que ya tienes.' },
+   { t:'Herramientas más habituales', body:`
+     <ul><li><b>Asistentes generalistas:</b> ChatGPT, Claude, Gemini, Copilot, Le Chat (Mistral).</li><li><b>Con búsqueda y fuentes:</b> Perplexity y los modos de búsqueda de los asistentes anteriores.</li><li><b>Sobre tus documentos:</b> NotebookLM y funciones de «chat con archivos».</li><li><b>Integradas en la oficina:</b> Microsoft 365 Copilot, Gemini en Google Workspace, Notion AI.</li><li><b>Traducción:</b> DeepL y similares.</li></ul>
+     <p class="muted small">El mercado cambia muy rápido: capacidades, planes y condiciones de privacidad varían. Revisa la versión actual y qué herramientas aprueba tu organización.</p>`,
+     key:'Elige por la tarea y por las garantías de privacidad, no por la moda.' },
+   { t:'Recetas de prompts', body:`
+     <div class="ex"><small>Resumen ejecutivo</small>Resume el texto siguiente para la dirección en 5 viñetas: situación, problema, opciones, recomendación y próximos pasos. Máximo 120 palabras.</div>
+     <div class="ex"><small>Cambio de tono</small>Reescribe este correo con tono más cordial y directo, sin cambiar los datos. Dame 2 versiones.</div>
+     <div class="ex"><small>Acta</small>A partir de estas notas, genera un acta con decisiones, tareas, responsable y fecha en una tabla. Si falta algún dato, indícalo en lugar de inventarlo.</div>`,
+     key:'Pedir «si falta algo, dilo» reduce las invenciones.' },
+   { t:'Flujo de trabajo y buenas prácticas', body:`
+     <ol><li><b>Prepara el material:</b> objetivo, público, datos reales.</li><li><b>Genera un borrador</b> con un prompt estructurado.</li><li><b>Revisa con criterio:</b> hechos, cifras, nombres, tono.</li><li><b>Dale tu voz:</b> aporta ejemplos de tu estilo o edita a mano.</li><li><b>Cita y declara</b> cuando proceda.</li></ol>
+     <p><b>Trucos:</b> pega un texto tuyo para imitar el estilo, pide varias versiones y solicita que señale las partes menos seguras.</p>`,
+     key:'IA para el borrador, persona para la versión final.' }
+  ],
+  quiz:[
+   { q:'¿Qué tarea es especialmente adecuada para un LLM?', o:['Transformar texto que ya tienes (resumir, reescribir)','Calcular con total precisión sin comprobar','Conocer hechos de ayer sin búsqueda','Reemplazar tu criterio'], a:0, why:'Reescribir y resumir son sus puntos fuertes.' },
+   { q:'Para trabajar sobre tus propios documentos se usan herramientas como…', o:['NotebookLM o chat con archivos','Un reproductor de música','Un teclado','Una calculadora'], a:0, why:'Permiten fundamentar las respuestas en tus fuentes.' },
+   { q:'Un buen hábito al pedir un acta es…', o:['Pedir que invente lo que falte','Pedir que indique lo que falta','No dar notas','Pedir el doble de longitud'], a:1, why:'Evita rellenar huecos con datos inventados.' },
+   { q:'¿Qué debes hacer antes de enviar un informe redactado con IA?', o:['Nada','Revisar hechos, cifras y tono','Ocultarlo','Traducirlo'], a:1, why:'La revisión humana es obligatoria en la práctica.' },
+   { q:'¿Cómo logras que el texto suene a ti?', o:['Pegando un ejemplo de tu estilo','Poniéndolo en mayúsculas','Con más temperatura siempre','No se puede'], a:0, why:'Un ejemplo de estilo guía el tono de la IA.' }
+  ],
+  cards:[
+   ['Resumen ejecutivo','Síntesis breve para decidir: situación, opciones, recomendación.'],
+   ['Chat con documentos','Preguntar a la IA sobre archivos que subes tú.'],
+   ['Fundamentar (grounding)','Basar la respuesta en fuentes concretas.'],
+   ['Copilot','Asistente de IA integrado en aplicaciones de oficina.'],
+   ['Borrador asistido','Primera versión por IA, revisada y firmada por una persona.']
+  ]
+},
+/* ---------------------------------------------------------------- 6 */
+{ id:'t6', title:'IAG para generar imágenes', short:'Diseño, marketing y comunicación', min:15,
+  summary:'Cómo funcionan los generadores de imagen, qué herramientas existen y cómo usarlas con criterio.',
+  lessons:[
+   { t:'Cómo se genera una imagen', body:`
+     <p>La mayoría de los generadores usan <b>modelos de difusión</b>: parten de ruido y lo van refinando hasta formar una imagen guiada por tu texto.</p>
+     <ul><li><b>Texto a imagen:</b> describes y genera.</li><li><b>Imagen a imagen:</b> transformas o mejoras una existente.</li><li><b>Edición generativa:</b> rellenar, ampliar, quitar objetos o fondos.</li></ul>`,
+     key:'La IA interpreta tu descripción: cuanto más precisa, menos azar.' },
+   { t:'Herramientas habituales', body:`
+     <ul><li><b>Midjourney:</b> muy fuerte en estética y estilo.</li><li><b>Generadores integrados en asistentes:</b> ChatGPT, Gemini y otros, cómodos para iterar conversando.</li><li><b>Adobe Firefly:</b> integrado en el ecosistema Adobe, con foco en uso comercial.</li><li><b>Stable Diffusion y Flux:</b> modelos abiertos, flexibles y personalizables.</li><li><b>Ideogram:</b> destaca generando texto dentro de la imagen.</li><li><b>Canva:</b> generación y edición dentro de plantillas.</li></ul>
+     <p class="muted small">Cambian con mucha frecuencia. Revisa licencias y condiciones de uso comercial de cada una.</p>`,
+     key:'Para uso comercial, lee la licencia antes de generar.' },
+   { t:'Cómo escribir un prompt de imagen', body:`
+     <p>Describe: <b>sujeto + acción + entorno + estilo + plano + luz + color + formato</b>.</p>
+     <div class="ex"><small>Ejemplo</small>Fotografía de una técnica de laboratorio revisando una tableta, laboratorio moderno luminoso, plano medio, luz natural suave, paleta azul y blanca, relación 16:9, aspecto realista.</div>
+     <ul><li>Añade lo que <b>no</b> quieres («sin texto, sin logotipos»).</li><li>Itera cambiando un elemento cada vez.</li><li>Pide variaciones y elige.</li></ul>`,
+     key:'Fíjate en lo que sí controlas: estilo, encuadre, luz y formato.' },
+   { t:'Usos profesionales y límites', body:`
+     <ul><li><b>Usos:</b> ilustraciones para presentaciones, redes sociales, mockups, moodboards, ideas de campañas, retoque rápido.</li><li><b>Propiedad intelectual:</b> comprueba licencia y titularidad; evita imitar artistas o marcas.</li><li><b>Personas reales:</b> no uses su imagen sin consentimiento.</li><li><b>Transparencia:</b> el AI Act exige marcar el contenido sintético y etiquetar los deepfakes.</li><li><b>Sesgos:</b> revisa que la representación sea diversa y respetuosa.</li><li><b>Calidad:</b> manos, texto y logotipos pueden fallar; revisa los detalles.</li></ul>`,
+     key:'Si una imagen puede confundirse con real, etiquétala como generada por IA.' }
+  ],
+  quiz:[
+   { q:'Los modelos de difusión generan imágenes…', o:['Copiando una foto concreta','Refinando ruido guiado por un texto','Dibujando a mano','Buscándolas en la web'], a:1, why:'Parten de ruido y lo refinan según la descripción.' },
+   { q:'Un buen prompt de imagen incluye…', o:['Solo una palabra','Sujeto, estilo, luz, plano y formato','Solo el color','Un contrato'], a:1, why:'Cuantos más elementos clave, menos azar.' },
+   { q:'¿Qué conviene comprobar antes de usar una imagen en una campaña?', o:['La licencia y las condiciones de uso comercial','El peso en MB solo','El nombre del archivo','Nada'], a:0, why:'La licencia determina si puedes usarla comercialmente.' },
+   { q:'Un deepfake realista debe…', o:['Publicarse sin aviso','Etiquetarse como contenido sintético','Borrarse siempre','Venderse'], a:1, why:'El AI Act exige etiquetar los deepfakes.' },
+   { q:'¿Qué herramienta es conocida por generar bien texto dentro de la imagen?', o:['Ideogram','Una impresora','Un escáner','Un router'], a:0, why:'Ideogram destaca en tipografía dentro de imágenes (según su posicionamiento).' }
+  ],
+  cards:[
+   ['Modelo de difusión','Genera imágenes refinando ruido siguiendo un texto.'],
+   ['Prompt negativo','Indicación de lo que NO quieres en la imagen.'],
+   ['Relación de aspecto','Proporción de la imagen: 1:1, 16:9, 9:16…'],
+   ['Relleno generativo','Edición que completa o sustituye partes de una imagen.'],
+   ['Marcado de contenido','Señal visible o legible por máquina que indica origen sintético.']
+  ]
+},
+/* ---------------------------------------------------------------- 7 */
+{ id:'t7', title:'IAG para generar vídeo', short:'Clips, avatares y edición', min:15,
+  summary:'Qué se puede hacer hoy con vídeo generativo, flujo de producción y precauciones.',
+  lessons:[
+   { t:'Qué se puede hacer hoy', body:`
+     <ul><li><b>Texto a vídeo:</b> clips cortos a partir de una descripción.</li><li><b>Imagen a vídeo:</b> animar una imagen.</li><li><b>Vídeo a vídeo:</b> cambiar estilo o elementos.</li><li><b>Avatares:</b> presentadores sintéticos que leen un guion.</li><li><b>Edición asistida:</b> subtítulos, eliminar silencios, doblaje y traducción.</li></ul>
+     <p>Hoy suele funcionar mejor en <b>clips breves</b>; la coherencia en piezas largas sigue siendo un reto.</p>`,
+     key:'Piensa en planos cortos que luego montas, no en una película de un solo prompt.' },
+   { t:'Herramientas habituales', body:`
+     <ul><li><b>Generación:</b> Runway, Veo (Google), Kling, Pika, Luma y otros.</li><li><b>Avatares y vídeo corporativo:</b> HeyGen, Synthesia.</li><li><b>Edición con IA:</b> Descript, CapCut.</li><li><b>Voz:</b> ElevenLabs y otros servicios de síntesis y doblaje.</li></ul>
+     <p class="muted small">Disponibilidad, precios y límites cambian con frecuencia, y algunos servicios aparecen o desaparecen. Compruébalo antes de planificar un proyecto.</p>`,
+     key:'Prueba con un clip corto antes de comprometer un proyecto entero.' },
+   { t:'Flujo de producción', body:`
+     <ol><li><b>Objetivo y público.</b></li><li><b>Guion</b> (la IA ayuda a redactarlo).</li><li><b>Storyboard:</b> lista de planos.</li><li><b>Generar planos</b> con prompts de vídeo.</li><li><b>Montaje</b> y ritmo.</li><li><b>Voz, música y subtítulos.</b></li><li><b>Revisión</b> y etiquetado.</li></ol>
+     <div class="ex"><small>Prompt de vídeo</small>Plano general cenital de una oficina luminosa; la cámara avanza lentamente hacia un equipo que revisa una pantalla; luz natural, estilo documental; 6 segundos.</div>`,
+     key:'Un buen prompt de vídeo define plano, movimiento de cámara, acción y duración.' },
+   { t:'Límites y ética', body:`
+     <ul><li><b>Calidad:</b> manos, texto en pantalla, física y continuidad entre planos pueden fallar.</li><li><b>Consentimiento:</b> necesitas permiso para usar la imagen o la voz de una persona.</li><li><b>Deepfakes:</b> riesgo de desinformación y suplantación; etiquétalos.</li><li><b>Derechos:</b> evita imitar obras, personajes o marcas.</li><li><b>Transparencia:</b> indica que es contenido generado cuando pueda confundirse con real.</li></ul>`,
+     key:'Cuanto más real parezca el vídeo, más importante es avisar de que es sintético.' }
+  ],
+  quiz:[
+   { q:'Hoy el vídeo generativo funciona mejor con…', o:['Películas completas en un prompt','Clips breves que luego se montan','Solo audio','Solo texto'], a:1, why:'La coherencia en piezas largas sigue siendo difícil.' },
+   { q:'Un avatar sintético se usa para…', o:['Presentar un guion en vídeo','Descargar apps','Medir datos','Imprimir'], a:0, why:'Lee un guion como si fuera un presentador.' },
+   { q:'¿Qué elementos define un buen prompt de vídeo?', o:['Plano, movimiento de cámara, acción y duración','Solo un título','Solo música','Solo la hora'], a:0, why:'Son las instrucciones clave que guían la generación.' },
+   { q:'Antes de clonar la voz de una persona necesitas…', o:['Su consentimiento','Nada','Un antivirus','Más memoria'], a:0, why:'Voz e imagen son datos personales y requieren permiso.' },
+   { q:'Un vídeo que pueda confundirse con real debe…', o:['Etiquetarse como sintético','Ocultarse','Venderse','Comprimirse'], a:0, why:'El AI Act y la ética piden transparencia.' }
+  ],
+  cards:[
+   ['Texto a vídeo','Generar un clip a partir de una descripción escrita.'],
+   ['Avatar sintético','Presentador generado por IA que lee un guion.'],
+   ['Storyboard','Secuencia de planos que planifica un vídeo.'],
+   ['Clonación de voz','Reproducir la voz de una persona; requiere su consentimiento.'],
+   ['Coherencia temporal','Que personajes y objetos se mantengan iguales entre planos.']
+  ]
+},
+/* ---------------------------------------------------------------- 8 */
+{ id:'t8', title:'Automatización de tareas repetitivas', short:'Flujos, integraciones y agentes', min:15,
+  summary:'Cómo detectar tareas automatizables, qué herramientas usar y cómo hacerlo sin perder el control.',
+  lessons:[
+   { t:'Qué automatizar', body:`
+     <p>Busca tareas que sean <b>frecuentes</b>, <b>repetitivas</b> y con reglas claras, donde la IA aporte comprensión de texto:</p>
+     <ul><li>Clasificar y etiquetar correos o tickets.</li><li>Resumir reuniones y enviar el acta.</li><li>Extraer datos de facturas o formularios.</li><li>Redactar respuestas a preguntas frecuentes.</li><li>Actualizar hojas de cálculo y CRM.</li></ul>
+     <div class="ex"><small>Criterio</small>Prioriza lo que ocurre a menudo y consume mucho tiempo, y deja para después lo de alto riesgo.</div>`,
+     key:'Automatiza primero lo aburrido y de bajo riesgo.' },
+   { t:'Herramientas', body:`
+     <ul><li><b>Zapier y Make:</b> conectan miles de aplicaciones sin programar.</li><li><b>n8n:</b> flujos con opción de alojarlo tú mismo.</li><li><b>Microsoft Power Automate:</b> integrado en el ecosistema Microsoft.</li><li><b>Asistentes y agentes:</b> los copilotos de Microsoft y Google y los agentes que ejecutan pasos por ti.</li><li><b>Scripts:</b> con ayuda de IA puedes generar pequeñas automatizaciones con Python o Excel.</li></ul>
+     <p class="muted small">Comprueba siempre planes, límites y dónde se procesan los datos.</p>`,
+     key:'Empieza con herramientas no-code; programa solo si lo necesitas.' },
+   { t:'Anatomía de una automatización', body:`
+     <p>Casi todas siguen el patrón <b>disparador → acciones → salida</b>.</p>
+     <div class="ex"><small>Ejemplo</small><b>1. Disparador:</b> llega un correo de un cliente.<br><b>2. IA:</b> clasifica el tema y propone una respuesta.<br><b>3. Acción:</b> guarda el caso en una hoja de cálculo.<br><b>4. Persona:</b> revisa y envía.</div>
+     <p>Mantén siempre una <b>persona en el bucle</b> cuando la respuesta tenga consecuencias.</p>`,
+     key:'La IA propone, la persona aprueba. Al principio, siempre.' },
+   { t:'Riesgos y control', body:`
+     <ul><li><b>Errores en cascada:</b> un fallo se repite cientos de veces. Prueba con pocos casos primero.</li><li><b>Datos sensibles:</b> cada servicio conectado es un nuevo destino de datos.</li><li><b>Permisos mínimos:</b> da acceso solo a lo necesario.</li><li><b>Registro:</b> guarda qué se ha hecho y cuándo.</li><li><b>Mantenimiento:</b> revisa las automatizaciones cada cierto tiempo.</li><li><b>Normativa:</b> si afecta a personas (RRHH, crédito, educación), puede ser de alto riesgo.</li></ul>`,
+     key:'Una automatización sin supervisión es un error multiplicado.' }
+  ],
+  quiz:[
+   { q:'¿Qué tarea es buena candidata para automatizar?', o:['Una única tarea rara y delicada','Clasificar a diario cientos de correos','Despedir a alguien','Firmar un contrato'], a:1, why:'Es frecuente, repetitiva y de bajo riesgo.' },
+   { q:'El patrón básico de una automatización es…', o:['Disparador → acciones → salida','Salida → disparador','Solo salida','Solo disparador'], a:0, why:'Algo la activa, ejecuta pasos y produce un resultado.' },
+   { q:'¿Qué herramienta puedes alojar tú mismo?', o:['n8n','Ninguna','Solo Excel','Solo el navegador'], a:0, why:'n8n ofrece opción de autoalojamiento.' },
+   { q:'¿Qué significa «persona en el bucle»?', o:['Una persona supervisa y aprueba los pasos importantes','Nadie participa','La IA aprueba sola','Se repite el flujo infinitamente'], a:0, why:'La supervisión humana reduce errores.' },
+   { q:'Al dar acceso a una automatización conviene…', o:['Dar todos los permisos','Dar permisos mínimos','No dar ninguno nunca','Dar la contraseña por correo'], a:1, why:'El principio de mínimo privilegio limita daños.' }
+  ],
+  cards:[
+   ['Disparador','Evento que inicia una automatización.'],
+   ['Persona en el bucle','Supervisión humana en pasos importantes.'],
+   ['No-code','Crear flujos sin programar.'],
+   ['Agente de IA','Sistema que planifica y ejecuta varios pasos para lograr un objetivo.'],
+   ['Permisos mínimos','Dar acceso solo a lo imprescindible.']
+  ]
+},
+/* ---------------------------------------------------------------- 9 */
+{ id:'t9', title:'Otros usos profesionales', short:'Datos, código, voz, investigación y más', min:15,
+  summary:'Análisis de datos, programación, audio, investigación, atención al cliente y cómo seguir aprendiendo.',
+  lessons:[
+   { t:'Datos y hojas de cálculo', body:`
+     <ul><li><b>Explorar datos:</b> sube un archivo y pide resumen, anomalías y gráficos.</li><li><b>Fórmulas:</b> pide fórmulas de Excel o Sheets y que las explique.</li><li><b>Limpieza:</b> normalizar fechas, nombres, duplicados.</li></ul>
+     <div class="ex"><small>Prompt</small>Analiza este CSV de ventas. Dame las 3 tendencias principales, posibles anomalías y una tabla resumen por mes. Indica cómo has calculado cada cifra.</div>
+     <p><b>Cuidado:</b> comprueba cálculos con una muestra y anonimiza datos personales.</p>`,
+     key:'Pide siempre cómo se ha calculado, y verifica con una muestra.' },
+   { t:'Código y herramientas internas', body:`
+     <ul><li><b>Asistentes de código:</b> sugieren, explican y corrigen código.</li><li><b>Pequeñas automatizaciones:</b> scripts de Python, macros, consultas SQL.</li><li><b>Prototipos:</b> páginas y apps sencillas a partir de una descripción.</li></ul>
+     <p>Revisa el código antes de ejecutarlo, sobre todo si toca archivos o datos reales, y no incluyas claves ni contraseñas.</p>`,
+     key:'Entender lo que ejecutas es parte de usarlo responsablemente.' },
+   { t:'Voz, reuniones e investigación', body:`
+     <ul><li><b>Transcripción y actas:</b> convertir audio en texto y resumir decisiones (avisa a los participantes y respeta el consentimiento).</li><li><b>Síntesis de voz:</b> locuciones y accesibilidad.</li><li><b>Investigación:</b> herramientas con fuentes citadas y análisis de papers o informes largos.</li><li><b>Aprendizaje:</b> usar la IA como tutor que te hace preguntas y explica con ejemplos.</li></ul>
+     <p>Cuando investigues, abre las fuentes que cita la IA y comprueba que dicen lo que afirma.</p>`,
+     key:'Una cita que no has abierto es una cita que no has verificado.' },
+   { t:'Sectores y siguientes pasos', body:`
+     <ul><li><b>Atención al cliente:</b> chatbots (recuerda avisar de que son IA).</li><li><b>Marketing:</b> segmentación, textos, variantes de anuncios.</li><li><b>Recursos humanos:</b> redacción de ofertas. La selección y evaluación de personas puede ser de alto riesgo.</li><li><b>Educación y formación:</b> materiales y práctica adaptada.</li><li><b>Salud, legal y finanzas:</b> apoyo con supervisión profesional estricta.</li></ul>
+     <div class="ex"><small>Tu plan</small>1. Elige una tarea semanal repetitiva. 2. Crea un prompt-plantilla. 3. Pruébalo con 5 casos. 4. Mide el tiempo ahorrado. 5. Compártelo con tu equipo.</div>`,
+     key:'Empieza pequeño, mide, comparte y mantén siempre el criterio humano.' }
+  ],
+  quiz:[
+   { q:'Al analizar datos con IA conviene…', o:['Fiarse sin mirar','Verificar los cálculos con una muestra','Subir todo sin anonimizar','Evitar los gráficos'], a:1, why:'Comprobar con una muestra detecta errores de cálculo.' },
+   { q:'Antes de ejecutar código generado por IA debes…', o:['Revisarlo y entenderlo','Ejecutarlo a ciegas','Borrarlo','Publicarlo'], a:0, why:'El código puede tocar archivos o datos reales.' },
+   { q:'¿Qué hacer al transcribir una reunión con IA?', o:['Avisar a los participantes y respetar su consentimiento','Grabar en secreto','Publicar la grabación','Nada'], a:0, why:'La grabación y el tratamiento de voz requieren transparencia y base legal.' },
+   { q:'En selección de personal con IA hay que recordar que…', o:['Puede ser un uso de alto riesgo según el AI Act','Está siempre prohibido','No tiene ninguna norma','Es riesgo mínimo'], a:0, why:'El empleo está entre los ámbitos de alto riesgo.' },
+   { q:'¿Cuál es un buen primer paso para adoptar la IA?', o:['Automatizarlo todo a la vez','Elegir una tarea repetitiva y probar con pocos casos','Esperar sin hacer nada','Prohibirla'], a:1, why:'Pequeño, medible y con supervisión.' }
+  ],
+  cards:[
+   ['Transcripción','Convertir audio en texto con IA.'],
+   ['Asistente de código','Herramienta que sugiere, explica y corrige código.'],
+   ['Fuentes citadas','Referencias que debes abrir para verificar.'],
+   ['Anonimizar','Quitar o disfrazar datos que identifican a personas.'],
+   ['Piloto','Prueba pequeña y medible antes de extender un uso.']
+  ]
+}
+];
+
+/* ===== NIVELES: lecciones y tests intermedios (i) y avanzados (a) ===== */
+const EXTRA = [
+/* 1 */ {
+ i:[
+  { t:'Cómo se entrena un LLM', body:`
+   <p>Un modelo de lenguaje moderno pasa por varias fases:</p>
+   <ol><li><b>Preentrenamiento:</b> lee enormes cantidades de texto y aprende a predecir el siguiente token.</li><li><b>Ajuste con instrucciones:</b> se entrena con ejemplos de «petición → buena respuesta» para que obedezca órdenes.</li><li><b>Alineamiento:</b> se refina con valoraciones humanas (por ejemplo, RLHF y técnicas similares) para que sea más útil y seguro.</li></ol>
+   <p>Durante una conversación el modelo <b>no aprende</b>: solo usa el contexto que tiene delante. Lo que «sabe» viene del entrenamiento.</p>`, key:'Entrenar cambia el modelo; conversar solo cambia su contexto.' },
+  { t:'Transformers y atención', body:`
+   <p>Casi todos los LLM actuales usan la arquitectura <b>Transformer</b>, presentada en 2017 en el artículo «Attention Is All You Need».</p>
+   <p>Su idea central es la <b>atención</b>: cada token pondera cuánto importan los demás tokens del texto para interpretarse.</p>
+   <div class="ex"><small>Intuición</small>En «el banco del parque» y «el banco cobró una comisión», la palabra «banco» se interpreta mirando las palabras que la rodean.</div>
+   <p>Además procesa muchos tokens en paralelo, lo que permitió escalar los modelos.</p>`, key:'La atención permite usar el contexto para desambiguar y relacionar ideas.' },
+  { t:'Familias de modelos y cómo elegir', body:`
+   <ul><li><b>Generalistas:</b> versátiles para casi todo.</li><li><b>De razonamiento:</b> dedican más cómputo a «pensar» antes de responder; mejores en problemas complejos, más lentos y caros.</li><li><b>Multimodales:</b> entienden texto, imagen, audio o vídeo.</li><li><b>Pequeños o locales:</b> más baratos y privados, menos potentes.</li><li><b>Abiertos o cerrados:</b> con pesos descargables o solo por API.</li></ul>
+   <p>Elige según calidad, coste, velocidad, privacidad y licencia.</p>`, key:'El modelo más grande no siempre es el adecuado: ajusta al problema.' }
+ ],
+ a:[
+  { t:'Embeddings y búsqueda semántica', body:`
+   <p>Un <b>embedding</b> convierte un texto en una lista de números (un vector) de modo que los textos con significado parecido quedan cerca.</p>
+   <ul><li>Se compara con medidas como la <b>similitud del coseno</b>.</li><li>Permite buscar por significado, no solo por palabras exactas.</li><li>Es la base de la clasificación, el agrupamiento y el <b>RAG</b>.</li></ul>
+   <div class="ex"><small>Ejemplo</small>Buscar «devolver un pedido» puede encontrar un documento titulado «política de reembolsos».</div>`, key:'Los embeddings convierten significado en geometría.' },
+  { t:'RAG frente a ajuste fino', body:`
+   <ul><li><b>RAG (generación aumentada por recuperación):</b> busca documentos relevantes y los añade al prompt. Conocimiento actualizable y con citas.</li><li><b>Ajuste fino:</b> reentrena parte del modelo. Útil para estilo, formato o tareas muy específicas; peor para incorporar hechos que cambian.</li></ul>
+   <div class="ex"><small>Orden recomendado</small>1. Mejora el prompt. 2. Añade RAG si faltan datos. 3. Considera el ajuste fino si lo anterior no basta.</div>`, key:'Para que el modelo «sepa» tus datos, normalmente RAG antes que ajuste fino.' },
+  { t:'Evaluar modelos con criterio', body:`
+   <ul><li>Los <b>benchmarks</b> públicos miden tareas concretas y sirven de orientación.</li><li><b>Limitaciones:</b> pueden estar contaminados (el modelo vio las preguntas), se optimiza para ellos y no reflejan tu caso.</li><li>Construye tu propio conjunto de <b>casos reales</b> con respuestas esperadas.</li><li>Mide calidad, <b>coste</b>, <b>latencia</b> y robustez ante entradas raras.</li></ul>`, key:'La mejor evaluación es la que haces con tus propios casos.' }
+ ],
+ qi:[
+  { q:'Durante una conversación normal, el modelo…', o:['Se reentrena con cada mensaje','Usa el contexto sin cambiar sus pesos','Borra su entrenamiento','Aprende de todos los usuarios al instante'], a:1, why:'Solo usa el contexto; el entrenamiento ya ocurrió antes.' },
+  { q:'La idea central de la arquitectura Transformer es…', o:['La atención','El reconocimiento facial','La compresión de vídeo','El cifrado'], a:0, why:'La atención pondera la relación entre tokens.' },
+  { q:'¿Para qué sirve el ajuste con instrucciones?', o:['Para que el modelo obedezca peticiones','Para borrar datos','Para hacerlo más pequeño','Para conectarlo a la red'], a:0, why:'Entrena con pares petición-respuesta.' },
+  { q:'Un modelo de razonamiento suele ser…', o:['Más lento y costoso, mejor en problemas complejos','Más rápido y barato siempre','Solo para imágenes','Idéntico a uno generalista'], a:0, why:'Gasta más cómputo en pensar antes de responder.' }
+ ],
+ qa:[
+  { q:'Un embedding es…', o:['Un vector que representa el significado de un texto','Un tipo de imagen','Una contraseña','Un formato de archivo'], a:0, why:'Textos parecidos tienen vectores cercanos.' },
+  { q:'Para que el modelo use documentos que cambian a menudo conviene…', o:['RAG','Reentrenar cada día','Ignorarlos','Pedirle que adivine'], a:0, why:'RAG recupera la información actual sin reentrenar.' },
+  { q:'¿Qué limitación tienen los benchmarks públicos?', o:['Pueden no reflejar tu caso y estar contaminados','Son siempre perfectos','Solo sirven para vídeo','No se pueden consultar'], a:0, why:'Conviene evaluar con casos propios.' },
+  { q:'El ajuste fino resulta especialmente útil para…', o:['Fijar estilo o formato específico','Conocer noticias de hoy','Navegar por internet','Sustituir la supervisión'], a:0, why:'Es menos adecuado para hechos cambiantes.' }
+ ]
+},
+/* 2 */ {
+ i:[
+  { t:'Salida estructurada y delimitadores', body:`
+   <p>Cuando el resultado va a otro proceso o debes compararlo, pide un formato estricto.</p>
+   <ul><li>Separa instrucciones y datos con <b>delimitadores</b> (por ejemplo, <code>&lt;texto&gt; … &lt;/texto&gt;</code> o comillas triples).</li><li>Define el esquema: «Devuelve JSON con las claves <code>tema</code>, <code>urgencia</code> y <code>resumen</code>».</li><li>Incluye un ejemplo de salida y pide <b>solo</b> ese formato.</li></ul>
+   <div class="ex"><small>Ejemplo</small>Clasifica el correo entre &lt;correo&gt; y &lt;/correo&gt;. Responde solo con JSON: {"tema": "...", "urgencia": "alta|media|baja"}.</div>`, key:'Un formato definido hace el resultado comparable y automatizable.' },
+  { t:'Técnicas de refinamiento', body:`
+   <ul><li><b>Autorrevisión:</b> «Critica tu respuesta con estos criterios y mejórala».</li><li><b>Descomposición:</b> divide un problema en subtareas.</li><li><b>Alternativas:</b> pide 3 opciones y los criterios para elegir.</li><li><b>Autoconsistencia:</b> genera varias respuestas y quédate con la más repetida en problemas de razonamiento.</li><li><b>Supuestos:</b> pide que los explicite.</li></ul>
+   <p class="muted small">Si le pides su nivel de confianza, tómalo como orientación: no siempre está bien calibrado.</p>`, key:'Una segunda pasada guiada suele mejorar más que reescribir el prompt desde cero.' },
+  { t:'Instrucciones persistentes y asistentes', body:`
+   <p>Las instrucciones de sistema, los proyectos, los GPT o los Gems guardan instrucciones que se aplican a toda la conversación.</p>
+   <ul><li>Define rol, tono, reglas y formato de salida.</li><li>Indica qué hacer cuando no sabe: «Si falta información, pregunta».</li><li>Adjunta documentos de referencia.</li><li>Pruébalo con casos límite y preguntas fuera de alcance.</li></ul>`, key:'Escribe las instrucciones una vez y pruébalas muchas.' }
+ ],
+ a:[
+  { t:'Evaluación sistemática de prompts', body:`
+   <ol><li>Reúne un <b>conjunto de prueba</b> de 20-50 casos, con algunos extremos.</li><li>Define una <b>rúbrica</b>: exactitud, formato, tono, longitud.</li><li>Compara versiones (A/B) cambiando una sola variable.</li><li>Repite las pruebas al cambiar de modelo para detectar <b>regresiones</b>.</li><li>Puedes usar un modelo como «juez», pero muestrea y revisa a mano: puede tener sesgos propios.</li></ol>`, key:'Lo que no mides no mejora de forma fiable.' },
+  { t:'Seguridad: inyección de prompts', body:`
+   <ul><li><b>Directa:</b> el usuario escribe instrucciones para saltarse las reglas.</li><li><b>Indirecta:</b> instrucciones ocultas en una web, correo o documento que la IA procesa.</li></ul>
+   <p><b>Mitigaciones:</b> separar claramente datos e instrucciones, dar permisos mínimos, exigir confirmación humana en acciones sensibles, validar las salidas y registrar lo ocurrido. <b>No existe defensa total</b>: diseña asumiendo que puede fallar.</p>`, key:'Trata el contenido externo como no confiable, aunque «parezca» una orden.' },
+  { t:'Ingeniería de contexto y parámetros', body:`
+   <ul><li><b>Qué entra en la ventana:</b> instrucciones, ejemplos, documentos recuperados e historial. Más contexto no siempre es mejor: lo irrelevante distrae.</li><li>En contextos muy largos, la información del medio puede recibir menos atención: pon lo esencial al principio o al final.</li><li>Resume el historial cuando crezca.</li><li><b>Temperatura:</b> baja para tareas precisas, alta para ideación.</li><li><b>Versiona</b> tus prompts como si fueran código.</li></ul>`, key:'El prompt es solo una parte: gestionar qué contexto ve el modelo es lo que escala.' }
+ ],
+ qi:[
+  { q:'¿Para qué sirven los delimitadores?', o:['Separar instrucciones de datos','Decorar el prompt','Aumentar la temperatura','Cifrar el texto'], a:0, why:'Evitan que el modelo confunda datos con instrucciones.' },
+  { q:'La autorrevisión consiste en…', o:['Pedir que critique y mejore su propia respuesta','Borrar la respuesta','Repetir la pregunta','Cambiar de idioma'], a:0, why:'Una segunda pasada guiada mejora el resultado.' },
+  { q:'Una buena instrucción persistente indica…', o:['Qué hacer si falta información','Solo el nombre del asistente','Nada de formato','Que invente si no sabe'], a:0, why:'Pedir aclaración reduce invenciones.' },
+  { q:'Para que un resultado se use en otro programa conviene…', o:['Pedir un formato como JSON con claves definidas','Pedir prosa libre','Pedir más adjetivos','Subir la temperatura'], a:0, why:'Formato estricto, resultado procesable.' }
+ ],
+ qa:[
+  { q:'¿Qué es una regresión al evaluar prompts?', o:['Que un cambio empeore casos que antes funcionaban','Que el prompt sea más corto','Una mejora de calidad','Un error de red'], a:0, why:'Por eso se repiten las pruebas tras cada cambio.' },
+  { q:'La inyección de prompts indirecta proviene de…', o:['Contenido externo como webs o documentos','Solo del usuario','De la batería','Del teclado'], a:0, why:'Instrucciones ocultas en contenido que la IA procesa.' },
+  { q:'Una mitigación razonable ante la inyección es…', o:['Permisos mínimos y confirmación humana en acciones sensibles','Dar acceso total','Ignorar el problema','Quitar los registros'], a:0, why:'Reduce el daño si la defensa falla.' },
+  { q:'Para tareas muy precisas conviene una temperatura…', o:['Baja','Muy alta','Aleatoria','Negativa'], a:0, why:'Menos variación, más consistencia.' }
+ ]
+},
+/* 3 */ {
+ i:[
+  { t:'Roles en la cadena de valor', body:`
+   <ul><li><b>Proveedor:</b> desarrolla un sistema o modelo, o lo comercializa con su nombre.</li><li><b>Responsable del despliegue:</b> lo usa bajo su autoridad en su actividad profesional.</li><li><b>Importador y distribuidor:</b> lo introducen o ponen a disposición en el mercado de la UE.</li><li><b>Representante autorizado:</b> actúa en la UE por un proveedor de fuera.</li></ul>
+   <p>Un mismo agente puede cambiar de rol: por ejemplo, quien modifica sustancialmente un sistema de alto riesgo o lo comercializa con su marca puede pasar a ser proveedor. Revisa tu caso con el área jurídica.</p>`, key:'Tus obligaciones dependen del rol que tengas, no solo del sistema.' },
+  { t:'Modelos de propósito general (GPAI)', body:`
+   <p>Los modelos que hay debajo de los chatbots tienen obligaciones propias para sus proveedores, desde el 2 de agosto de 2025:</p>
+   <ul><li>Documentación técnica e información para quienes los integran.</li><li>Política de respeto a los derechos de autor.</li><li>Resumen público de los datos de entrenamiento.</li><li>Los de <b>riesgo sistémico</b> (se presume por la cantidad de cómputo de entrenamiento) deben evaluar riesgos, reforzar la ciberseguridad y notificar incidentes graves.</li></ul>
+   <p>Existe un <b>código de buenas prácticas</b> voluntario que ayuda a demostrar el cumplimiento.</p>`, key:'Si solo usas un chatbot, las obligaciones GPAI son sobre todo de quien lo ofrece.' },
+  { t:'Transparencia en la práctica (art. 50)', body:`
+   <ul><li><b>Interacción:</b> avisar a la persona de que habla con una IA, salvo que sea evidente.</li><li><b>Marcado:</b> los sistemas que generan audio, imagen, vídeo o texto sintéticos deben marcar la salida en formato legible por máquina.</li><li><b>Deepfakes:</b> quien los publica debe indicar que son artificiales.</li><li><b>Textos de interés público:</b> deben indicar que son generados por IA, salvo revisión y responsabilidad editorial humana.</li><li>También hay avisos para reconocimiento de emociones y categorización biométrica.</li></ul>
+   <p class="muted small">La Comisión publicó directrices sobre estas obligaciones. Para sistemas ya comercializados, el marcado legible por máquina tiene plazo hasta el 2 de diciembre de 2026.</p>`, key:'La transparencia aplica sea cual sea el nivel de riesgo.' }
+ ],
+ a:[
+  { t:'Requisitos del alto riesgo', body:`
+   <p>Los proveedores de sistemas de alto riesgo deben cumplir, entre otros:</p>
+   <ul><li>Sistema de <b>gestión de riesgos</b> durante todo el ciclo de vida.</li><li><b>Gobernanza de datos</b>: calidad, representatividad, sesgos.</li><li><b>Documentación técnica</b> y registro automático de eventos.</li><li>Información clara para quien lo despliega.</li><li><b>Supervisión humana</b> efectiva.</li><li>Exactitud, robustez y <b>ciberseguridad</b>.</li><li><b>Evaluación de conformidad</b>, marcado CE y registro en la base de datos de la UE.</li></ul>
+   <p class="muted small">Aplicación prevista tras el aplazamiento: 2 dic 2027 (anexo III) y 2 ago 2028 (anexo I).</p>`, key:'El alto riesgo exige un sistema de calidad, no solo un buen modelo.' },
+  { t:'Obligaciones de quien despliega', body:`
+   <ul><li>Usar el sistema según sus instrucciones.</li><li>Encargar la <b>supervisión humana</b> a personas con competencia y autoridad.</li><li>Controlar los datos de entrada bajo su control.</li><li>Vigilar el funcionamiento y conservar los registros.</li><li><b>Informar a trabajadores y representantes</b> antes de usar alto riesgo en el centro de trabajo.</li><li>Informar a las personas afectadas por decisiones apoyadas en IA.</li><li>Ciertos responsables (como organismos públicos o servicios de crédito y seguros) deben hacer una <b>evaluación de impacto en derechos fundamentales</b> (art. 27).</li></ul>`, key:'Usar un sistema de terceros no te libra de obligaciones propias.' },
+  { t:'Gobernanza, sanciones y relación con otras normas', body:`
+   <ul><li><b>Oficina Europea de IA:</b> supervisa los modelos de propósito general.</li><li><b>Autoridades nacionales:</b> en España, la AESIA (Agencia Española de Supervisión de la Inteligencia Artificial).</li><li><b>Sanciones:</b> hasta 35 M€ o 7 % (prácticas prohibidas); hasta 15 M€ o 3 % (otras obligaciones); hasta 7,5 M€ o 1 % (información incorrecta). Para pymes se aplica el importe menor.</li><li>Convive con el <b>RGPD</b>, la normativa de productos y la de servicios digitales.</li><li>Los <b>entornos de pruebas regulatorios</b> permiten ensayar con supervisión.</li></ul>`, key:'El AI Act no sustituye al RGPD: ambos se aplican a la vez.' }
+ ],
+ qi:[
+  { q:'Quien usa un sistema de IA en su actividad profesional es…', o:['Responsable del despliegue','Importador','Distribuidor','Regulador'], a:0, why:'Es el rol de quien lo emplea bajo su autoridad.' },
+  { q:'¿Qué debe hacer un proveedor de un modelo de propósito general?', o:['Publicar un resumen de los datos de entrenamiento','Nada','Prohibir su uso','Cobrar una tasa'], a:0, why:'Es una de sus obligaciones, junto con la documentación y el copyright.' },
+  { q:'El marcado legible por máquina del contenido sintético corresponde a…', o:['Los proveedores de sistemas generativos','Solo a los usuarios finales','A nadie','A los anunciantes'], a:0, why:'Es una obligación del art. 50(2).' },
+  { q:'Un texto generado por IA sobre asuntos de interés público…', o:['Debe indicarlo, salvo revisión editorial humana','Nunca se puede publicar','Se publica sin más','Solo se publica en inglés'], a:0, why:'Hay excepción si existe revisión y responsabilidad editorial humana.' }
+ ],
+ qa:[
+  { q:'¿Qué requisito aplica a los sistemas de alto riesgo?', o:['Sistema de gestión de riesgos y supervisión humana','Solo un aviso legal','Ninguno','Solo una web'], a:0, why:'Son requisitos centrales del alto riesgo.' },
+  { q:'¿Qué autoridad nacional supervisa la IA en España?', o:['AESIA','Correos','El Banco de España en exclusiva','Ninguna'], a:0, why:'La Agencia Española de Supervisión de la IA.' },
+  { q:'La multa máxima por prácticas prohibidas es…', o:['35 M€ o el 7 %','1.000 €','Siempre 15 M€','No hay multas'], a:0, why:'Es el tramo más alto de sanciones.' },
+  { q:'Antes de usar IA de alto riesgo en el centro de trabajo hay que…', o:['Informar a trabajadores y representantes','Ocultarlo','Esperar un año','Pedir permiso a un cliente'], a:0, why:'Es una obligación del responsable del despliegue.' }
+ ]
+},
+/* 4 */ {
+ i:[
+  { t:'Sesgo y equidad en la práctica', body:`
+   <ul><li><b>Sesgo de datos:</b> el entrenamiento refleja desigualdades.</li><li><b>Sesgo de representación:</b> ciertos grupos aparecen poco o con estereotipos.</li><li><b>Sesgo de evaluación:</b> se mide solo con casos del grupo mayoritario.</li></ul>
+   <p><b>Cómo detectarlo:</b> prueba la misma petición variando el género, edad u origen del perfil y compara. <b>Cómo mitigarlo:</b> instrucciones explícitas, revisión por personas diversas y, en decisiones sobre personas, medir resultados por grupos.</p>`, key:'El sesgo se encuentra probando, no suponiendo.' },
+  { t:'Privacidad y RGPD en el uso diario', body:`
+   <ul><li><b>Minimización:</b> usa solo los datos imprescindibles.</li><li><b>Base legal y finalidad:</b> necesitas un motivo válido y claro.</li><li><b>Encargado de tratamiento:</b> si el proveedor trata datos por ti, hace falta contrato.</li><li><b>Transferencias internacionales:</b> exigen garantías.</li><li><b>Decisiones automatizadas</b> con efectos significativos (art. 22): derechos específicos.</li><li><b>Seudonimizar</b> reduce riesgo pero no equivale a anonimizar.</li></ul>
+   <p>Usa versiones empresariales con garantías contractuales y consulta al delegado de protección de datos.</p>`, key:'Si hay datos personales, la pregunta no es «¿puedo?» sino «¿con qué base y garantías?».' },
+  { t:'Propiedad intelectual y autoría', body:`
+   <ul><li>En el derecho de autor europeo, la protección parte de una <b>creación intelectual humana</b>. Un resultado totalmente automático podría no estar protegido; tu aportación creativa sí puede estarlo.</li><li>La <b>minería de textos y datos</b> tiene excepciones con posibilidad de que los titulares se opongan (reserva de derechos).</li><li>Revisa los términos de cada herramienta sobre titularidad y uso comercial.</li><li>Evita imitar obras, estilos reconocibles o marcas.</li></ul>
+   <p class="muted small">Es un área en evolución con casos judiciales abiertos. Para usos de alto valor, consulta con asesoría jurídica.</p>`, key:'Documenta tu aportación humana: es lo que más pesa.' }
+ ],
+ a:[
+  { t:'Evaluación de impacto y gestión del riesgo', body:`
+   <ol><li>Describe el uso y los datos.</li><li>Identifica a las personas afectadas.</li><li>Enumera riesgos (probabilidad × impacto).</li><li>Define medidas de mitigación.</li><li>Calcula el riesgo residual y decide.</li><li>Revisa periódicamente.</li></ol>
+   <p>Herramientas relacionadas: la <b>evaluación de impacto de protección de datos</b> (RGPD), la de <b>derechos fundamentales</b> (AI Act), el marco <b>NIST AI RMF</b> (gobernar, mapear, medir, gestionar) y la norma <b>ISO/IEC 42001</b> de sistemas de gestión de IA.</p>`, key:'Documentar la decisión es parte de tomarla bien.' },
+  { t:'Gobierno de la IA en la organización', body:`
+   <ul><li><b>Política de uso aceptable:</b> qué herramientas, con qué datos y para qué.</li><li><b>Inventario</b> de sistemas y casos de uso.</li><li><b>Roles:</b> responsable, comité, enlace jurídico y de seguridad.</li><li><b>Proceso de aprobación</b> de nuevas herramientas.</li><li><b>Formación</b> por perfil (art. 4).</li><li><b>Registro de incidentes</b> y revisión periódica.</li><li>Cláusulas con proveedores sobre datos y responsabilidades.</li></ul>`, key:'Sin inventario no hay gobierno: no puedes gestionar lo que no conoces.' },
+  { t:'Desinformación, deepfakes y huella ambiental', body:`
+   <ul><li>La detección automática de contenido sintético es <b>imperfecta</b>.</li><li>La <b>procedencia</b> (credenciales de contenido tipo C2PA) y la verificación de fuentes ayudan más.</li><li>Define un <b>protocolo</b> para suplantaciones y bulos que afecten a tu organización.</li><li><b>Impacto ambiental:</b> entrenar y, sobre todo, usar a gran escala consume energía y agua. Elige el modelo del tamaño adecuado y evita regenerar sin necesidad.</li></ul>`, key:'Verificar el origen vale más que intentar adivinar si algo es falso.' }
+ ],
+ qi:[
+  { q:'Una forma práctica de detectar sesgos es…', o:['Probar la misma petición variando el perfil','Confiar en la IA','No probar','Usar más mayúsculas'], a:0, why:'Comparar resultados revela diferencias de trato.' },
+  { q:'Seudonimizar datos es…', o:['Lo mismo que anonimizarlos','Reducir el riesgo, pero no eliminar la identificabilidad','Borrarlos todos','Cifrar el disco'], a:1, why:'Los datos seudonimizados siguen siendo personales.' },
+  { q:'En el derecho de autor europeo, la protección parte de…', o:['Una creación intelectual humana','Cualquier archivo','El número de palabras','El idioma'], a:0, why:'La aportación creativa humana es clave.' },
+  { q:'Si un proveedor trata datos personales por tu cuenta, necesitas…', o:['Un contrato de encargado de tratamiento','Nada','Una foto','Un aviso en redes'], a:0, why:'Es un requisito del RGPD.' }
+ ],
+ qa:[
+  { q:'Una evaluación de riesgo incluye…', o:['Probabilidad e impacto','Solo el precio','Solo el color','Nada'], a:0, why:'Probabilidad × impacto, mitigación y riesgo residual.' },
+  { q:'ISO/IEC 42001 es…', o:['Una norma de sistema de gestión de IA','Un lenguaje de programación','Un modelo de lenguaje','Una red social'], a:0, why:'Establece requisitos para gestionar la IA en una organización.' },
+  { q:'¿Qué elemento es básico en el gobierno de la IA?', o:['Un inventario de sistemas y casos de uso','Ocultar herramientas','Ninguna formación','Prohibir todo'], a:0, why:'Sin inventario no se puede gestionar el riesgo.' },
+  { q:'Frente a los deepfakes, resulta más sólido…', o:['Verificar la procedencia y las fuentes','Confiar en un detector único','Ignorarlos','Compartirlos rápido'], a:0, why:'Los detectores son imperfectos.' }
+ ]
+},
+/* 5 */ {
+ i:[
+  { t:'Guías de estilo y plantillas', body:`
+   <ul><li>Escribe una <b>guía de estilo</b> breve: tono, vocabulario, longitud, frases que evitar.</li><li>Incluye 2 ejemplos buenos y 1 malo.</li><li>Crea <b>plantillas</b> por tipo de documento (propuesta, acta, comunicado) con huecos para variables.</li><li>Añade una <b>lista de comprobación</b> final: cifras, nombres, fechas, tono.</li></ul>
+   <p>Guárdalas como instrucciones persistentes para reutilizarlas.</p>`, key:'Lo que defines una vez no lo corriges cien veces.' },
+  { t:'Documentos largos', body:`
+   <ul><li>Divide en secciones y resume cada una; luego resume los resúmenes (<b>resumen jerárquico</b>).</li><li>Pide <b>citas con apartado o página</b> para localizar cada afirmación.</li><li>Pregunta por <b>contradicciones</b> y por lo que el documento no dice.</li><li>En textos muy largos puede perderse información del medio: haz preguntas concretas.</li><li>Verifica siempre las partes críticas contra el original.</li></ul>`, key:'Un buen resumen señala dónde mirar, no te exime de leer lo crítico.' },
+  { t:'Traducción, localización y claridad', body:`
+   <ul><li>Aporta un <b>glosario</b> de términos y el registro (tú o usted).</li><li>Pide adaptar referencias culturales, formatos de fecha y unidades.</li><li>Para <b>lenguaje claro</b> o lectura fácil: frases cortas, voz activa, una idea por frase.</li><li>Revisa términos técnicos o jurídicos con una persona nativa o experta.</li><li>Añade texto alternativo y subtítulos para accesibilidad.</li></ul>`, key:'Traducir bien es adaptar, no solo cambiar de idioma.' }
+ ],
+ a:[
+  { t:'Asistente sobre tu base de conocimiento (RAG)', body:`
+   <ol><li><b>Prepara los documentos:</b> limpios, actualizados, con título y fecha.</li><li><b>Trocéalos</b> en fragmentos con sentido.</li><li>Genera <b>embeddings</b> y búscalos por similitud.</li><li>Pasa los fragmentos al modelo y exige <b>respuesta con cita</b>.</li><li>Aplica <b>permisos</b>: cada persona solo recupera lo que puede ver.</li><li>Define qué responder si no hay información: «No lo encuentro».</li><li>Evalúa con preguntas de prueba y revisa los fallos.</li></ol>`, key:'La calidad de un RAG depende más de los documentos que del modelo.' },
+  { t:'Detectores de texto IA y autoría', body:`
+   <ul><li>Los detectores de «texto escrito por IA» <b>no son fiables</b>: dan falsos positivos y negativos, y pueden perjudicar a quien escribe en una lengua que no es la suya.</li><li>No deben ser la única prueba en decisiones sobre personas.</li><li>Alternativas: políticas claras de uso, <b>historial de versiones</b>, entregas por fases y conversación sobre el proceso.</li><li>Una declaración transparente del uso de IA es más útil que intentar detectarlo.</li></ul>`, key:'Si una decisión depende de «detectar IA», revisa el proceso, no solo el texto.' },
+  { t:'Flujo editorial con trazabilidad', body:`
+   <ul><li>Roles: <b>generar, revisar, verificar y aprobar</b>; que no recaiga todo en la misma persona.</li><li>Registra qué partes se generaron con IA, con qué herramienta y qué fuentes se usaron.</li><li>Verifica cifras, citas y nombres contra fuentes primarias.</li><li>Define cuándo hay que declarar el uso de IA (por ejemplo, textos de interés público sin revisión editorial humana).</li><li>Mide calidad, tiempo ahorrado y errores detectados.</li></ul>`, key:'La trazabilidad convierte el uso de IA en un proceso auditable.' }
+ ],
+ qi:[
+  { q:'Un resumen jerárquico consiste en…', o:['Resumir por partes y luego resumir los resúmenes','Cortar al azar','Pedir más palabras','Traducir'], a:0, why:'Sirve para documentos largos.' },
+  { q:'¿Para qué sirve un glosario en traducción?', o:['Mantener términos consistentes','Cambiar de idioma','Reducir el texto','Nada'], a:0, why:'Fija la terminología.' },
+  { q:'Al trabajar con documentos largos conviene pedir…', o:['Citas con apartado o página','Solo opiniones','Más temperatura','Menos contexto'], a:0, why:'Facilita la verificación.' },
+  { q:'Una guía de estilo ayuda a…', o:['Mantener tono y vocabulario coherentes','Aumentar los tokens','Evitar revisar','Generar imágenes'], a:0, why:'Fija el tono una vez para todos los textos.' }
+ ],
+ qa:[
+  { q:'En un RAG, ¿qué debe responder si no hay información?', o:['Que no la encuentra','Inventar algo plausible','Cualquier cosa','Nada'], a:0, why:'Evita alucinaciones.' },
+  { q:'Los detectores de texto IA son…', o:['Poco fiables como prueba única','Perfectos','Obligatorios por ley','Siempre gratuitos'], a:0, why:'Dan falsos positivos y negativos.' },
+  { q:'¿Qué aporta la trazabilidad editorial?', o:['Poder auditar qué se generó y verificó','Más velocidad solo','Menos revisión','Anonimato'], a:0, why:'Hace el proceso revisable.' },
+  { q:'En un RAG con datos internos hay que aplicar…', o:['Permisos por persona','Acceso público','Ningún control','Solo contraseña compartida'], a:0, why:'Cada persona solo debe recuperar lo que puede ver.' }
+ ]
+},
+/* 6 */ {
+ i:[
+  { t:'Control y consistencia visual', body:`
+   <ul><li>Usa <b>imágenes de referencia</b> para fijar estilo, personaje o producto.</li><li>La <b>semilla</b> (seed), si la herramienta la ofrece, ayuda a reproducir un resultado.</li><li>Guarda tus mejores prompts como <b>biblioteca de marca</b>.</li><li>Cambia un elemento cada vez al iterar.</li><li>Para personajes recurrentes, describe siempre los mismos rasgos clave.</li></ul>`, key:'La consistencia sale de referencias y descripciones fijas, no de la suerte.' },
+  { t:'Edición generativa', body:`
+   <ul><li><b>Inpainting:</b> reemplaza o rellena una zona seleccionada.</li><li><b>Outpainting:</b> amplía el lienzo más allá de los bordes.</li><li><b>Eliminar fondo u objetos.</b></li><li><b>Ampliación de resolución</b> (upscaling).</li><li><b>Cambio de estilo</b> manteniendo la composición.</li></ul>
+   <p>Conserva siempre el original y revisa bordes, manos, texto y reflejos.</p>`, key:'La edición generativa es retoque asistido: tú decides cuándo está bien.' },
+  { t:'Producción para marca y canales', body:`
+   <ol><li><b>Brief:</b> objetivo, público, mensaje.</li><li><b>Generación</b> de varias opciones.</li><li><b>Selección</b> y retoque.</li><li><b>Maquetación:</b> añade la tipografía y logotipos en una herramienta de diseño, no con la IA.</li><li><b>Formatos</b> por canal (cuadrado, vertical, panorámico).</li><li><b>Accesibilidad:</b> contraste y texto alternativo.</li></ol>`, key:'Usa la IA para la imagen y el diseño para la marca.' }
+ ],
+ a:[
+  { t:'Modelos abiertos y personalización', body:`
+   <ul><li>Modelos abiertos como Stable Diffusion o Flux pueden ejecutarse en tu equipo o servidor.</li><li><b>LoRA:</b> ajuste ligero para aprender un estilo o un sujeto.</li><li><b>ControlNet:</b> controla la imagen con pose, bordes o profundidad.</li><li><b>ComfyUI:</b> flujos de trabajo por nodos.</li></ul>
+   <p>Ventajas: privacidad y control. Requisitos: hardware con GPU, conocimientos técnicos y <b>revisar la licencia</b> de cada modelo y de los datos con los que ajustes.</p>`, key:'Más control implica más responsabilidad técnica y legal.' },
+  { t:'Procedencia y marcas de agua', body:`
+   <ul><li><b>C2PA / credenciales de contenido:</b> metadatos firmados que registran origen y ediciones.</li><li><b>Marcas de agua</b> visibles e invisibles.</li><li><b>Límites:</b> los metadatos pueden perderse al comprimir o capturar la pantalla y las marcas pueden degradarse.</li><li>El AI Act pide soluciones técnicas de marcado eficaces, interoperables, robustas y fiables en la medida técnicamente viable.</li></ul>`, key:'Ninguna técnica es infalible: combínalas con etiquetado claro.' },
+  { t:'Riesgo legal y reputacional', body:`
+   <ul><li><b>Derechos de imagen:</b> evita parecidos con personas reales.</li><li><b>Marcas y obras:</b> no imites logotipos, personajes ni estilos reconocibles.</li><li><b>Datos de entrenamiento:</b> hay litigios abiertos en distintos países; sigue la evolución.</li><li><b>Garantías de proveedores:</b> algunos ofrecen cláusulas de protección para uso comercial; lee sus condiciones.</li><li>Define una <b>política interna</b> y revisión legal en campañas de alto impacto.</li></ul>`, key:'A mayor visibilidad de la campaña, más revisión.' }
+ ],
+ qi:[
+  { q:'¿Qué es el inpainting?', o:['Reemplazar o rellenar una zona de la imagen','Ampliar solo el tamaño del archivo','Convertir a vídeo','Borrar la imagen'], a:0, why:'Edita una región seleccionada.' },
+  { q:'¿Dónde conviene añadir la tipografía de marca?', o:['En una herramienta de diseño','Siempre dentro del prompt','Nunca','En el nombre del archivo'], a:0, why:'La IA suele fallar con texto y marca.' },
+  { q:'La semilla (seed) sirve para…', o:['Reproducir un resultado','Aumentar el precio','Cambiar el idioma','Cifrar'], a:0, why:'Ayuda a repetir un resultado en herramientas que la ofrecen.' },
+  { q:'Una imagen de referencia ayuda a…', o:['Fijar estilo o sujeto','Reducir el peso','Eliminar el prompt','Evitar revisar'], a:0, why:'Aporta consistencia.' }
+ ],
+ qa:[
+  { q:'LoRA se usa para…', o:['Ajustar ligeramente un modelo a un estilo o sujeto','Comprimir vídeo','Traducir','Enviar correos'], a:0, why:'Es un ajuste ligero.' },
+  { q:'C2PA es…', o:['Un estándar de procedencia de contenido','Un modelo de imagen','Una red social','Un formato de vídeo'], a:0, why:'Registra origen y ediciones con metadatos firmados.' },
+  { q:'Un límite de los metadatos de procedencia es que…', o:['Pueden perderse al comprimir o capturar','Son infalibles','Son visibles siempre','Son ilegales'], a:0, why:'Por eso se combinan con otras medidas.' },
+  { q:'Al usar un modelo abierto debes…', o:['Revisar su licencia','Ignorarla','Cambiar su nombre','Venderlo'], a:0, why:'Las licencias varían.' }
+ ]
+},
+/* 7 */ {
+ i:[
+  { t:'Guion y storyboard con IA', body:`
+   <ol><li>Parte del <b>brief</b>: objetivo, público, duración.</li><li>Estructura: <b>gancho</b>, desarrollo, cierre y llamada a la acción.</li><li>Pide una <b>tabla de planos</b>: nº, plano, acción, voz o texto, duración.</li><li>Genera un prompt de vídeo por plano.</li><li>Comprueba que la suma de duraciones cuadra.</li></ol>`, key:'Un guion con tabla de planos convierte una idea en trabajo organizable.' },
+  { t:'Consistencia entre planos', body:`
+   <ul><li>Usa <b>imágenes de referencia</b> o fotogramas inicial y final cuando la herramienta lo permita.</li><li>Genera <b>fotogramas clave</b> con IA de imagen y anímalos.</li><li>Repite una <b>descripción fija</b> de personaje, vestuario y escenario.</li><li>Aprovecha el <b>corte</b>: montar planos cortos oculta incoherencias.</li><li>Descarta sin pena: es normal generar varias tomas por plano.</li></ul>`, key:'En vídeo generativo se genera mucho y se selecciona poco.' },
+  { t:'Audio, voz y subtítulos', body:`
+   <ul><li><b>Locución sintética:</b> con voces licenciadas o con consentimiento expreso.</li><li><b>Música:</b> generada o con licencia clara.</li><li><b>Doblaje y sincronización labial</b> para versiones en otros idiomas.</li><li><b>Subtítulos automáticos:</b> revísalos siempre.</li><li>Normaliza el volumen y cuida la accesibilidad.</li></ul>`, key:'Un vídeo se juzga tanto por el sonido como por la imagen.' }
+ ],
+ a:[
+  { t:'Flujos híbridos: rodaje e IA', body:`
+   <ul><li>Combina <b>grabación real</b> con IA para ampliar planos, limpiar elementos, crear fondos o animar ilustraciones.</li><li>Los <b>avatares</b> encajan en formación interna y contenidos que se actualizan a menudo.</li><li>Decide por tramo qué es real y qué es sintético según calidad, coste y <b>riesgo de confusión</b>.</li><li>Documenta qué partes son sintéticas.</li></ul>`, key:'Híbrido suele superar a «todo IA» o «nada de IA».' },
+  { t:'Costes, calidad y planificación', body:`
+   <ul><li>Se paga por <b>créditos o cómputo</b> y muchas tomas se descartan: calcula el <b>coste por segundo útil</b>.</li><li>Prevé tiempos de espera y límites de resolución y duración.</li><li>Haz una prueba piloto antes de presupuestar.</li><li>Ten un <b>plan B</b> (stock, rodaje, animación clásica).</li><li>Revisa el cambio de condiciones de las herramientas durante el proyecto.</li></ul>`, key:'Presupuesta sobre lo que usas, no sobre lo que generas.' },
+  { t:'Derechos, consentimiento y etiquetado', body:`
+   <ul><li>Para una <b>réplica digital</b> de voz o imagen, pide consentimiento escrito y específico: alcance, usos y duración.</li><li>Respeta los derechos de intérpretes y artistas.</li><li>Etiqueta como sintético lo que pueda confundirse con real (AI Act y normas de muchas plataformas).</li><li>Conserva guiones, prompts y fuentes como <b>registro de producción</b>.</li><li>Evita parecidos con personas reales sin autorización.</li></ul>`, key:'Sin consentimiento documentado, no hay réplica digital.' }
+ ],
+ qi:[
+  { q:'Una tabla de planos incluye…', o:['Plano, acción, voz y duración','Solo el título','Solo la música','Solo el presupuesto'], a:0, why:'Organiza el rodaje o la generación.' },
+  { q:'¿Qué ayuda a mantener un personaje coherente?', o:['Imágenes de referencia y descripción fija','Cambiar el prompt cada vez','No usar referencia','Subir el brillo'], a:0, why:'Aporta consistencia entre planos.' },
+  { q:'Los subtítulos automáticos…', o:['Hay que revisarlos','Son siempre perfectos','No sirven','Están prohibidos'], a:0, why:'Pueden fallar con nombres y términos técnicos.' },
+  { q:'¿Por qué el corte ayuda?', o:['Oculta pequeñas incoherencias entre planos','Aumenta la duración','Elimina el audio','No ayuda'], a:0, why:'Planos cortos facilitan montar.' }
+ ],
+ qa:[
+  { q:'Un flujo híbrido combina…', o:['Grabación real y elementos generados','Solo texto','Solo música','Nada'], a:0, why:'Aprovecha lo mejor de cada técnica.' },
+  { q:'El coste por segundo útil incluye…', o:['Las tomas descartadas','Solo la toma final','Solo el cliente','Solo el sonido'], a:0, why:'Se paga también lo que no se usa.' },
+  { q:'Para clonar la voz de una persona necesitas…', o:['Consentimiento escrito y específico','Nada','Solo una grabación','Solo su nombre'], a:0, why:'Voz e imagen son datos personales.' },
+  { q:'Conservar prompts y fuentes sirve para…', o:['Tener un registro de producción','Aumentar el peso','Nada','Evitar editar'], a:0, why:'Facilita auditar y reproducir.' }
+ ]
+},
+/* 8 */ {
+ i:[
+  { t:'Flujos con lógica y datos', body:`
+   <ul><li><b>Condiciones:</b> «si la urgencia es alta, avisa al responsable».</li><li><b>Bifurcaciones y bucles</b> sobre listas de elementos.</li><li><b>Variables y mapeo de campos</b> entre aplicaciones.</li><li><b>Filtros</b> para ignorar lo que no importa.</li><li>Un paso de IA puede devolver <b>JSON</b> con la clasificación para alimentar el siguiente paso.</li></ul>`, key:'La IA clasifica; las reglas deciden qué se hace con cada clase.' },
+  { t:'APIs, webhooks y conectores', body:`
+   <ul><li><b>API:</b> forma de que dos programas se hablen.</li><li><b>Webhook:</b> aviso automático cuando ocurre un evento.</li><li><b>Autenticación:</b> claves de API u OAuth.</li><li><b>Límites de uso</b> y costes por llamada.</li><li>Guarda las claves en el gestor de secretos de la herramienta, nunca en un prompt.</li><li>Si no hay conector, se puede usar una petición HTTP genérica.</li></ul>`, key:'Una clave filtrada equivale a una puerta abierta.' },
+  { t:'Errores, pruebas y mantenimiento', body:`
+   <ul><li>Gestiona <b>errores y reintentos</b>, con alertas a una persona.</li><li>Prueba con <b>datos ficticios</b> y un entorno separado.</li><li>Añade <b>puntos de control humano</b> en pasos críticos.</li><li>Registra cada ejecución.</li><li>Documenta el flujo y su responsable.</li><li>Revísalo cuando cambie la herramienta, el modelo o el proceso.</li></ul>`, key:'Una automatización sin dueño acaba rota o peligrosa.' }
+ ],
+ a:[
+  { t:'Agentes y uso de herramientas', body:`
+   <p>Un <b>agente</b> deja que el modelo decida qué herramienta usar (buscar, leer un archivo, enviar un correo) mediante <b>llamadas a funciones</b>, en un bucle de planificar, actuar y observar.</p>
+   <ul><li>Útil en tareas abiertas con varios pasos.</li><li><b>Riesgos:</b> acciones no deseadas, bucles, coste y errores acumulados.</li><li><b>Controles:</b> pocas herramientas, límite de pasos y presupuesto, confirmación humana en acciones irreversibles.</li></ul>`, key:'A más autonomía, más controles.' },
+  { t:'MCP y orquestación', body:`
+   <ul><li><b>Model Context Protocol (MCP):</b> estándar abierto para conectar asistentes con herramientas y datos a través de servidores. Permite reutilizar conectores.</li><li><b>Riesgos:</b> permisos demasiado amplios, servidores no confiables e inyección indirecta a través de contenido externo.</li><li><b>Orquestación multiagente:</b> un coordinador reparte trabajo entre agentes especializados.</li></ul>
+   <p>Si un flujo simple resuelve el problema, no lo compliques con agentes.</p>`, key:'Instala solo conectores de fuentes que controlas o en las que confías.' },
+  { t:'Observabilidad, seguridad y retorno', body:`
+   <ul><li><b>Trazas</b> de cada ejecución: entradas, pasos y salidas.</li><li><b>Métricas:</b> tasa de éxito, intervención humana, coste y tiempo.</li><li><b>Pruebas de regresión</b> al cambiar de modelo o prompt.</li><li><b>Seguridad:</b> permisos mínimos, secretos protegidos y aislamiento.</li></ul>
+   <div class="ex"><small>Retorno aproximado</small>Tiempo ahorrado × frecuencia × coste por hora, menos coste de herramienta, supervisión y mantenimiento.</div>`, key:'Si no lo mides, no sabes si compensa.' }
+ ],
+ qi:[
+  { q:'Un webhook es…', o:['Un aviso automático cuando ocurre un evento','Un tipo de imagen','Un contrato','Un error'], a:0, why:'Permite reaccionar a eventos.' },
+  { q:'Las claves de API se guardan…', o:['En el gestor de secretos','En el prompt','En un chat','En un correo'], a:0, why:'Nunca en texto visible.' },
+  { q:'Un paso de IA con salida JSON sirve para…', o:['Alimentar el siguiente paso del flujo','Decorar','Evitar pruebas','Sustituir la lógica'], a:0, why:'Hace la salida procesable.' },
+  { q:'Antes de lanzar un flujo conviene probarlo con…', o:['Datos ficticios','Datos reales de clientes sin control','Nada','Datos de un competidor'], a:0, why:'Evita daños y fugas.' }
+ ],
+ qa:[
+  { q:'Un agente de IA se caracteriza por…', o:['Decidir qué herramientas usar en un bucle','Solo traducir','No usar herramientas','Ser siempre seguro'], a:0, why:'Planifica, actúa y observa.' },
+  { q:'MCP es…', o:['Un estándar para conectar asistentes con herramientas y datos','Un modelo de imagen','Una moneda','Un procesador'], a:0, why:'Model Context Protocol.' },
+  { q:'Un control prudente para un agente es…', o:['Confirmación humana en acciones irreversibles','Quitar los límites','Dar todos los permisos','Ocultar los registros'], a:0, why:'Reduce el impacto de los errores.' },
+  { q:'¿Qué mide el retorno de una automatización?', o:['Tiempo ahorrado frente a costes de herramienta y supervisión','Solo el tiempo','Solo el coste','Nada'], a:0, why:'Hay que descontar supervisión y mantenimiento.' }
+ ]
+},
+/* 9 */ {
+ i:[
+  { t:'Asistentes personalizados', body:`
+   <p>Proyectos, GPT, Gems y similares combinan <b>instrucciones</b>, <b>archivos</b> y a veces herramientas.</p>
+   <ul><li>Casos: onboarding, preguntas frecuentes, redacción de propuestas.</li><li>Define un <b>alcance estrecho</b>.</li><li>Incluye ejemplos y el criterio de «no lo sé».</li><li>Prueba con casos reales y límite.</li><li>Revisa qué contienen los archivos y quién puede acceder.</li></ul>`, key:'Un asistente pequeño y bien probado vale más que uno que «lo hace todo».' },
+  { t:'Análisis de datos con código', body:`
+   <ul><li>Pide que <b>escriba y ejecute código</b> (Python, SQL) en lugar de calcular «de cabeza».</li><li>Lee el código y comprueba con una muestra.</li><li>Pide gráficos y que <b>documente supuestos</b>.</li><li>Guarda el script para <b>reproducir</b> el análisis.</li><li>Contrasta con tus herramientas de analítica.</li><li>Anonimiza datos personales.</li></ul>`, key:'Código revisable es mejor que cifras sin explicación.' },
+  { t:'Reuniones, atención al cliente y marketing', body:`
+   <ul><li><b>Reuniones:</b> transcripción → acta → tareas con responsable. Informa a los participantes.</li><li><b>Atención al cliente:</b> clasificación, borradores de respuesta, base de conocimiento y <b>escalado a una persona</b>.</li><li><b>Marketing:</b> variantes de mensajes, segmentación y pruebas A/B.</li><li>En todos: define métricas y revisión humana.</li></ul>`, key:'En cada flujo, decide dónde interviene siempre una persona.' }
+ ],
+ a:[
+  { t:'IA local y privacidad avanzada', body:`
+   <ul><li><b>Modelos abiertos</b> en tu infraestructura o en nube privada.</li><li><b>Ventajas:</b> control de datos y personalización.</li><li><b>Costes:</b> hardware, mantenimiento y, según el caso, algo menos de calidad que los mejores modelos cerrados.</li><li><b>Acuerdos empresariales:</b> revisa uso de datos para entrenamiento, retención, residencia de datos y subencargados.</li><li>Decide con una <b>evaluación de riesgo</b>, no por moda.</li></ul>`, key:'La privacidad se negocia en contrato y se comprueba en la práctica.' },
+  { t:'Adopción en la organización', body:`
+   <ol><li><b>Prioriza</b> casos por valor, viabilidad y riesgo.</li><li><b>Piloto</b> pequeño con indicadores.</li><li><b>Mide</b> tiempo, calidad y satisfacción.</li><li><b>Escala</b> lo que funciona, con formación por rol.</li><li>Apóyate en personas impulsoras y una política de uso clara.</li><li>Revisa periódicamente y retira lo que no aporta.</li></ol>`, key:'Adoptar IA es gestión del cambio tanto como tecnología.' },
+  { t:'Tendencias y cómo mantenerte al día', body:`
+   <ul><li>Tendencias que se observan: agentes más autónomos, modelos multimodales y de razonamiento, IA en el propio dispositivo y regulación en evolución. <b>Nadie puede predecir su ritmo con certeza.</b></li><li><b>Fuentes fiables:</b> EUR-Lex, la Comisión Europea, la AESIA y la documentación de los proveedores.</li><li>Práctica semanal con casos reales.</li><li>Ante el entusiasmo del momento, pregunta: ¿qué evidencia hay, cuánto cuesta y qué riesgos tiene?</li></ul>`, key:'Mantén un hábito de aprendizaje: las herramientas cambian, el criterio permanece.' }
+ ],
+ qi:[
+  { q:'Un asistente personalizado debe tener…', o:['Alcance estrecho y casos de prueba','Alcance infinito','Ninguna instrucción','Acceso a todo'], a:0, why:'Facilita calidad y control.' },
+  { q:'Para analizar datos con IA es preferible…', o:['Que escriba código revisable','Que calcule sin explicar','Pegar datos personales','No comprobar'], a:0, why:'El código se puede verificar y repetir.' },
+  { q:'En atención al cliente con IA es clave…', o:['Poder escalar a una persona','Ocultar que es IA','No medir','Evitar la base de conocimiento'], a:0, why:'Garantiza una salida humana.' },
+  { q:'Antes de transcribir una reunión debes…', o:['Informar a los participantes','Grabar en secreto','Publicar el audio','Nada'], a:0, why:'Transparencia y base legal.' }
+ ],
+ qa:[
+  { q:'Una ventaja de los modelos locales es…', o:['Mayor control de los datos','Que no requieren mantenimiento','Que siempre son mejores','Que son gratis siempre'], a:0, why:'Tienen costes de infraestructura y mantenimiento.' },
+  { q:'Un buen orden para adoptar IA es…', o:['Priorizar, pilotar, medir y escalar','Escalar y luego medir','No medir','Prohibir'], a:0, why:'Se aprende en pequeño antes de extender.' },
+  { q:'Para estar al día con la regulación consultas…', o:['Fuentes oficiales como EUR-Lex y la AESIA','Solo redes sociales','Rumores','Nada'], a:0, why:'Son fuentes primarias y fiables.' },
+  { q:'Ante una novedad llamativa conviene preguntar…', o:['Qué evidencia, coste y riesgos tiene','Cuántos likes tiene','Quién la comparte','Nada'], a:0, why:'Filtra el exceso de promesas.' }
+ ]
+}
+];
+
+const LV = { b:'Principiante', i:'Intermedio', a:'Avanzado' };
+COURSE.forEach((c,k)=>{
+  c.lessons.forEach(l=>{ l.lv='b'; });
+  const x = EXTRA[k];
+  x.i.forEach(l=>{ l.lv='i'; c.lessons.push(l); });
+  x.a.forEach(l=>{ l.lv='a'; c.lessons.push(l); });
+  c.qz = { b:c.quiz, i:x.qi, a:x.qa };
+});
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function shufQ(q){ const idx=shuffle(q.o.map((_,i)=>i)); const o=idx.map(i=>q.o[i]); q.a=idx.indexOf(q.a); q.o=o; }
+COURSE.forEach(c=>{ ['b','i','a'].forEach(lv=>c.qz[lv].forEach(shufQ)); });
+COURSE[3].lessons.find(l=>l.t==='Semáforo antes de usar IA').lab='priv';
+COURSE[6].lessons.find(l=>l.t==='Costes, calidad y planificación').lab='cost';
+
+const CARDS_X = [
+ [[['Preentrenamiento','Fase en la que el modelo aprende a predecir el siguiente token con enormes cantidades de texto.'],['Transformer','Arquitectura basada en atención, presentada en 2017, que usan casi todos los LLM actuales.'],['Modelo de razonamiento','Modelo que dedica más cómputo a pensar antes de responder; más lento y caro.']],
+  [['Embedding','Vector numérico que representa el significado de un texto.'],['RAG','Recuperar documentos relevantes y añadirlos al prompt para responder con fuentes actualizables.'],['Ajuste fino','Reentrenar parte del modelo para fijar estilo, formato o una tarea específica.']]],
+ [[['Delimitadores','Marcas que separan las instrucciones de los datos dentro del prompt.'],['Autorrevisión','Pedir al modelo que critique y mejore su propia respuesta.'],['Instrucción de sistema','Instrucciones persistentes que se aplican a toda la conversación.']],
+  [['Conjunto de prueba','Casos reales y extremos con los que se evalúa un prompt.'],['Regresión','Un cambio que empeora casos que antes funcionaban.'],['Inyección indirecta','Instrucciones ocultas en contenido externo (web, correo, documento) que la IA procesa.']]],
+ [[['Responsable del despliegue','Quien usa un sistema de IA bajo su autoridad en su actividad profesional.'],['GPAI','Modelo de propósito general: sus proveedores deben documentarlo y publicar un resumen de sus datos de entrenamiento.'],['Marcado legible por máquina','Señal técnica en el contenido sintético que indica su origen (art. 50.2).']],
+  [['Evaluación de conformidad','Procedimiento que comprueba que un sistema de alto riesgo cumple los requisitos antes de comercializarse.'],['AESIA','Agencia Española de Supervisión de la Inteligencia Artificial.'],['Art. 27','Evaluación de impacto en derechos fundamentales para ciertos responsables del despliegue.']]],
+ [[['Sesgo de representación','Ciertos grupos aparecen poco o con estereotipos en los datos o los resultados.'],['Minimización de datos','Usar solo los datos personales imprescindibles.'],['Seudonimización','Sustituir identificadores para reducir riesgo; los datos siguen siendo personales.']],
+  [['NIST AI RMF','Marco para gobernar, mapear, medir y gestionar los riesgos de la IA.'],['ISO/IEC 42001','Norma de sistema de gestión de la IA en una organización.'],['C2PA','Estándar de credenciales de contenido que registra origen y ediciones.']]],
+ [[['Guía de estilo','Reglas de tono, vocabulario y longitud que se reutilizan como instrucción.'],['Resumen jerárquico','Resumir por partes y después resumir los resúmenes.'],['Lenguaje claro','Frases cortas, voz activa y una idea por frase.']],
+  [['Troceado (chunking)','Dividir documentos en fragmentos con sentido para buscarlos en un RAG.'],['Trazabilidad editorial','Registro de qué se generó con IA, con qué fuentes y quién lo verificó.'],['Detector de texto IA','Herramienta poco fiable: da falsos positivos y negativos.']]],
+ [[['Semilla (seed)','Valor que ayuda a reproducir un resultado en las herramientas que lo permiten.'],['Inpainting y outpainting','Rellenar una zona de la imagen y ampliar el lienzo más allá de sus bordes.'],['Upscaling','Ampliar la resolución de una imagen con IA.']],
+  [['LoRA','Ajuste ligero de un modelo para que aprenda un estilo o un sujeto.'],['ControlNet','Control de la imagen mediante pose, bordes o profundidad.'],['Credenciales de contenido','Metadatos firmados sobre origen y ediciones; pueden perderse al comprimir.']]],
+ [[['Tabla de planos','Lista de planos con acción, voz o texto y duración.'],['Fotograma clave','Imagen inicial o final que se usa de referencia para mantener la coherencia.'],['Sincronización labial','Ajustar el movimiento de los labios al audio, por ejemplo en un doblaje.']],
+  [['Flujo híbrido','Combinar rodaje real con elementos generados por IA.'],['Coste por segundo útil','Coste total dividido entre los segundos que acaban en el vídeo final, con los descartes incluidos.'],['Réplica digital','Copia sintética de la voz o la imagen de una persona; requiere consentimiento específico.']]],
+ [[['Webhook','Aviso automático que se envía cuando ocurre un evento.'],['API','Forma de que dos programas se comuniquen.'],['Gestor de secretos','Lugar seguro donde guardar claves, nunca dentro de un prompt.']],
+  [['Function calling','Capacidad del modelo de decidir qué herramienta usar y con qué parámetros.'],['MCP','Model Context Protocol: estándar abierto para conectar asistentes con herramientas y datos.'],['Observabilidad','Trazas y métricas de cada ejecución para detectar fallos y medir resultados.']]],
+ [[['Asistente personalizado','Instrucciones, archivos y herramientas combinados para una tarea concreta.'],['Análisis con código','Pedir a la IA que escriba código revisable en lugar de calcular de cabeza.'],['Escalado a persona','Salida humana en un flujo de atención automatizada.']],
+  [['IA local','Modelos abiertos ejecutados en tu infraestructura para controlar mejor los datos.'],['Gestión del cambio','Acompañar la adopción con formación, personas impulsoras y una política de uso.'],['Fuentes primarias','Textos oficiales como EUR-Lex o la AESIA para estar al día en regulación.']]]
+];
+COURSE.forEach((c,k)=>{
+  c.cards=c.cards.map(x=>[x[0],x[1],'b']);
+  CARDS_X[k][0].forEach(x=>c.cards.push([x[0],x[1],'i']));
+  CARDS_X[k][1].forEach(x=>c.cards.push([x[0],x[1],'a']));
+});
+function qkey(c,lv){ return lv==='b'?c.id:c.id+':'+lv; }
+
+const RISK_SCEN = [
+  { s:'Un filtro de spam para el correo de la empresa', a:3, f:'Riesgo mínimo: no afecta de forma significativa a derechos de las personas.' },
+  { s:'Un chatbot que atiende dudas de clientes en la web', a:2, f:'Riesgo limitado: debe informar de que se interactúa con una IA.' },
+  { s:'Un sistema que puntúa y descarta currículums automáticamente', a:1, f:'Alto riesgo: la selección de personal figura entre los usos de alto riesgo.' },
+  { s:'Una IA que da una puntuación social a ciudadanos según su comportamiento', a:0, f:'Práctica prohibida: la puntuación social entra en el riesgo inaceptable.' },
+  { s:'Un vídeo realista de una persona generado por IA para un anuncio', a:2, f:'Transparencia: el contenido sintético y los deepfakes deben etiquetarse.' },
+  { s:'Una IA que corrige y puntúa exámenes que deciden el acceso a un curso', a:1, f:'Alto riesgo: la educación y el acceso a formación son ámbitos de alto riesgo.' }
+];
+const RISK_LABELS = ['Inaceptable','Alto','Limitado','Mínimo'];
+
+/* ============================== ESTADO ============================== */
+const KEY='cursoIAG_v1';
+let P = { lessons:{}, quiz:{}, cards:{}, xp:0, days:[] };
+try{ const raw=localStorage.getItem(KEY); if(raw) P=Object.assign(P,JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(P)); }catch(e){} }
+function touchDay(){ const d=new Date().toISOString().slice(0,10); if(!P.days.includes(d)){ P.days.push(d); P.days=P.days.slice(-60);} }
+function streak(){
+  let n=0; const set=new Set(P.days); const d=new Date();
+  const fmt=x=>x.toISOString().slice(0,10);
+  if(!set.has(fmt(d))) d.setDate(d.getDate()-1);
+  while(set.has(fmt(d))){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+const ui = { tab:'home', view:{name:'home'}, lab:{}, flash:{deck:'all', lv:'all', i:0, flipped:false, order:null} };
+
+/* ============================== UTILIDADES ============================== */
+const $main = document.getElementById('main');
+const ICON_BACK = '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>';
+function done(t){ return (P.lessons[COURSE[t].id]||[]).filter(Boolean).length; }
+function isLessonDone(t,l){ return !!(P.lessons[COURSE[t].id]||[])[l]; }
+function totalLessons(){ return COURSE.reduce((a,c)=>a+c.lessons.length,0); }
+function totalDone(){ return COURSE.reduce((a,_,i)=>a+done(i),0); }
+function pct(){ return Math.round(totalDone()/totalLessons()*100); }
+function topicComplete(t){ return done(t)===COURSE[t].lessons.length && (P.quiz[COURSE[t].id]||0)>=60; }
+function nextLesson(){
+  for(let t=0;t<COURSE.length;t++) for(let l=0;l<COURSE[t].lessons.length;l++) if(!isLessonDone(t,l)) return {t,l};
+  return null;
+}
+function addXp(n){ P.xp+=n; touchDay(); save(); }
+function toast(msg){
+  const el=document.createElement('div'); el.className='toast'; el.textContent=msg; document.getElementById('app').appendChild(el);
+  setTimeout(()=>el.remove(),1800);
+}
+function go(view){ ui.view=view; render(); $main.scrollTop=0; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function back(label,act,extra){ return `<div class="topbar"><button class="back" aria-label="${label}" data-act="${act}" ${extra||''}>${ICON_BACK}</button><span class="muted small">${label}</span></div>`; }
+
+/* ============================== VISTAS ============================== */
+function ring(p){
+  const r=28,c=2*Math.PI*r;
+  return `<svg class="ring" viewBox="0 0 68 68" aria-label="Progreso total ${p}%"><circle cx="34" cy="34" r="${r}" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="7"/><circle cx="34" cy="34" r="${r}" fill="none" stroke="#F2B705" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p/100)}" transform="rotate(-90 34 34)"/><text x="34" y="39" text-anchor="middle" font-size="15" fill="#fff">${p}%</text></svg>`;
+}
+function vHome(){
+  const nx=nextLesson(); const p=pct();
+  let cta;
+  if(nx){ cta=`<button class="btn cta" data-act="lesson" data-t="${nx.t}" data-l="${nx.l}">${totalDone()?'Continuar':'Empezar'}: ${esc(COURSE[nx.t].lessons[nx.l].t)}</button>`; }
+  else cta=`<button class="btn cta" data-act="tab" data-tab="progress">Curso completado. Ver progreso</button>`;
+  return `
+  <div class="hero">${ring(p)}
+    <div class="kicker">9 temas · 3 niveles</div>
+    <h1>IA generativa para el trabajo</h1>
+    <p>De principiante a avanzado: lecciones cortas, laboratorios y tests.</p>
+    ${cta}
+  </div>
+  <div class="sec-title"><h2>Temario</h2><span class="muted small">${totalDone()}/${totalLessons()} lecciones</span></div>
+  <div class="stack">
+  ${COURSE.map((c,i)=>{
+    const d=done(i),n=c.lessons.length,q=P.quiz[c.id];
+    return `<button class="topic" data-act="topic" data-t="${i}">
+      <div class="num">${i+1}</div>
+      <div class="grow"><h3>${esc(c.title)}</h3>
+        <div class="bar" style="margin:6px 0 7px"><i style="width:${d/n*100}%"></i></div>
+        <div class="row" style="gap:6px;flex-wrap:wrap"><span class="chip">${c.min} min</span>
+        ${topicComplete(i)?'<span class="chip done">Completado</span>':(q!=null?`<span class="chip sun">Test ${q}%</span>`:`<span class="muted small">${d}/${n} lecciones</span>`)}</div>
+      </div></button>`;}).join('')}
+  </div>
+  <button class="topic" style="margin-top:14px;border-color:var(--teal)" data-act="${P.exam>=70?'cert':'exam'}"><div class="num" style="font-size:22px">★</div><div class="grow"><h3 style="margin:0">${P.exam>=70?'Ver certificado':'Examen final'}</h3><span class="muted small">${P.exam!=null?'Mejor resultado: '+P.exam+' %':'18 preguntas de los 9 temas · aprueba con un 70 %'}</span></div></button>
+  ${P.exam>=70?'<button class="btn alt small" style="margin-top:8px" data-act="exam">Repetir examen</button>':''}
+  <p class="muted small" style="margin-top:20px">Contenido divulgativo elaborado en noviembre de 2026. Las herramientas y la normativa evolucionan: contrasta los datos clave con fuentes oficiales.</p>`;
+}
+function vTopic(t){
+  const c=COURSE[t];
+  return `${back('Temario','home')}
+  <div class="kicker">Tema ${t+1}</div>
+  <h1 style="font-size:28px;margin:4px 0 8px">${esc(c.title)}</h1>
+  <p class="muted" style="margin-bottom:16px">${esc(c.summary)}</p>
+  ${['b','i','a'].map(lv=>{
+    const idx=c.lessons.map((l,i)=>i).filter(i=>c.lessons[i].lv===lv);
+    const nd=idx.filter(i=>isLessonDone(t,i)).length; const qv=P.quiz[qkey(c,lv)];
+    return `<div class="sec-title"><h3>${LV[lv]}</h3><span class="muted small">${nd}/${idx.length} lecciones</span></div>
+    <div class="stack">
+    ${idx.map(i=>{ const l=c.lessons[i]; return `<button class="topic" data-act="lesson" data-t="${t}" data-l="${i}">
+      <div class="num" style="font-size:22px">${isLessonDone(t,i)?'<span style="color:var(--good)">✓</span>':(i+1)}</div>
+      <div class="grow"><h3 style="margin:0">${esc(l.t)}</h3>${l.lab?'<span class="chip sun" style="margin-top:4px">Laboratorio</span>':''}</div></button>`;}).join('')}
+    <button class="btn alt" data-act="quiz" data-t="${t}" data-lv="${lv}">Test ${LV[lv].toLowerCase()} (${c.qz[lv].length} preguntas)${qv!=null?' · mejor '+qv+'%':''}</button>
+    </div>`;}).join('')}
+  <div class="stack" style="margin-top:18px">
+    <button class="btn alt" data-act="deck" data-deck="${t}">Repasar tarjetas</button>
+  </div>`;
+}
+function labPrompt(){
+  const L=ui.lab.prompt||(ui.lab.prompt={rol:'',tarea:'',ctx:'',fmt:'',res:''});
+  const f=(k,lab,hint,ph)=>`<label class="field"><span>${lab} <em>${hint}</em></span><textarea id="lab-${k}" data-lab="${k}" rows="2" placeholder="${ph}">${esc(L[k])}</textarea></label>`;
+  return `${f('rol','Rol','¿quién eres?','Eres un responsable de comunicación interna')}
+  ${f('tarea','Tarea','¿qué hay que hacer?','Redacta un aviso sobre el nuevo horario de verano')}
+  ${f('ctx','Contexto','datos y público','Plantilla de 200 personas, horario de 8 a 15 h en julio y agosto')}
+  ${f('fmt','Formato','cómo quieres la salida','Un correo de 100 palabras con asunto')}
+  ${f('res','Restricciones','qué evitar','Tono cercano, sin jerga, sin mencionar fechas no confirmadas')}
+  <div class="meter" id="lab-meter" aria-hidden="true"></div>
+  <p id="lab-score" class="small" style="font-weight:600;margin-bottom:8px"></p>
+  <div class="preview" id="lab-prev"></div>
+  <button class="btn small alt" style="margin-top:10px" data-act="copyprompt">Copiar prompt</button>`;
+}
+function promptText(){
+  const L=ui.lab.prompt||{};
+  const parts=[]; if(L.rol) parts.push(L.rol.trim()+'.'); if(L.tarea) parts.push('Tarea: '+L.tarea.trim()+'.');
+  if(L.ctx) parts.push('Contexto: '+L.ctx.trim()+'.'); if(L.fmt) parts.push('Formato: '+L.fmt.trim()+'.'); if(L.res) parts.push('Restricciones: '+L.res.trim()+'.');
+  return parts.join('\n');
+}
+function refreshPromptLab(){
+  const L=ui.lab.prompt||{}; const n=['rol','tarea','ctx','fmt','res'].filter(k=>(L[k]||'').trim().length>3).length;
+  const m=document.getElementById('lab-meter'); if(!m) return;
+  m.innerHTML=[0,1,2,3,4].map(i=>`<i class="${i<n?'on':''}"></i>`).join('');
+  const msgs=['Empieza por la tarea: es lo único imprescindible.','Mejor: añade más bloques.','Va tomando forma.','Bien. Falta poco.','Muy sólido. Casi completo.','Prompt completo. Pruébalo y compara.'];
+  document.getElementById('lab-score').textContent=n+'/5 bloques · '+msgs[n];
+  document.getElementById('lab-prev').textContent=promptText()||'Tu prompt aparecerá aquí.';
+}
+function labChoice(name,scen,labels){
+  const S=ui.lab[name]||(ui.lab[name]={});
+  return scen.map((sc,i)=>{
+    const sel=S[i];
+    return `<div class="scen"><p>${esc(sc.s)}</p><div class="opts">${labels.map((lb,k)=>{
+      let cls=''; if(sel!=null){ if(k===sc.a) cls='ok'; else if(k===sel) cls='ko'; }
+      return `<button class="${cls}" data-act="risk" data-n="${name}" data-i="${i}" data-k="${k}" ${sel!=null?'disabled':''}>${lb}</button>`;}).join('')}</div>
+      ${sel!=null?`<div class="fb"><b style="color:var(--${sel===sc.a?'good':'bad'})">${sel===sc.a?'Correcto.':'No exactamente.'}</b> ${esc(sc.f)}</div>`:''}</div>`;
+  }).join('');
+}
+const PRIV_LABELS=['Verde','Ámbar','Rojo'];
+const PRIV_SCEN=[
+ { s:'Pedir ideas de titulares para un post sobre tu sector', a:0, f:'Verde: no hay datos personales ni confidenciales.' },
+ { s:'Redactar un correo a un cliente con su nombre y su pedido, usando la herramienta aprobada por tu empresa', a:1, f:'Ámbar: hay datos personales mínimos. Herramienta aprobada y revisión humana.' },
+ { s:'Pegar la hoja de nóminas del equipo para que la IA la analice', a:2, f:'Rojo: datos personales y económicos sensibles. Solo con autorización y salvaguardas.' },
+ { s:'Resumir un informe público de una institución', a:0, f:'Verde: el contenido es público.' },
+ { s:'Subir el contrato confidencial de un cliente a un chatbot gratuito personal', a:2, f:'Rojo: información confidencial en una herramienta no aprobada.' },
+ { s:'Resumir actas internas sin datos personales con la herramienta corporativa', a:1, f:'Ámbar: información interna no crítica en una herramienta aprobada.' }
+];
+function labRisk(){ return labChoice('risk',RISK_SCEN,RISK_LABELS); }
+function labPriv(){ return labChoice('priv',PRIV_SCEN,PRIV_LABELS); }
+function labCost(){
+  const C=ui.lab.cost||(ui.lab.cost={seg:60,tomas:6,precio:0.5,horas:4,tarifa:40});
+  const f=(k,lab,min,max,step)=>`<label class="field"><span>${lab}: <b id="cv-${k}">${C[k]}</b></span><input type="range" id="cost-${k}" data-cost="${k}" min="${min}" max="${max}" step="${step}" value="${C[k]}" style="width:100%"></label>`;
+  return `${f('seg','Segundos de vídeo final',5,180,5)}${f('tomas','Tomas generadas por cada segundo útil',1,12,1)}${f('precio','Coste por segundo generado (€)',0.05,2,0.05)}${f('horas','Horas de montaje y revisión',0,40,1)}${f('tarifa','Tarifa por hora (€)',10,120,5)}
+  <div class="preview" id="cost-out" style="font-family:var(--body)"></div>
+  <p class="muted small" style="margin-top:8px">Valores de ejemplo: usa las condiciones reales de tu herramienta.</p>`;
+}
+function refreshCostLab(){
+  const C=ui.lab.cost; const o=document.getElementById('cost-out'); if(!C||!o) return;
+  Object.keys(C).forEach(k=>{ const e=document.getElementById('cv-'+k); if(e) e.textContent=(k==='precio'?(+C[k]).toFixed(2):C[k]); });
+  const gen=C.seg*C.tomas*C.precio, mon=C.horas*C.tarifa, tot=gen+mon, fmt=n=>n.toLocaleString('es-ES',{maximumFractionDigits:0});
+  o.innerHTML=`Generación: <b>${fmt(gen)} €</b> (${C.seg*C.tomas} s generados)<br>Montaje y revisión: <b>${fmt(mon)} €</b><br>Total: <b>${fmt(tot)} €</b><br>Coste por segundo útil: <b>${(tot/C.seg).toLocaleString('es-ES',{maximumFractionDigits:2})} €</b>`;
+}
+function vLesson(t,l){
+  const c=COURSE[t],ls=c.lessons[l],last=l===c.lessons.length-1;
+  return `${back(c.title,'topic','data-t="'+t+'"')}
+  <div class="segs">${c.lessons.map((_,i)=>`<i class="${i<=l?'on':''}"></i>`).join('')}</div>
+  <div class="card">
+    <div class="kicker">Tema ${t+1} · ${LV[ls.lv]} · Lección ${l+1} de ${c.lessons.length}</div>
+    <h2>${esc(ls.t)}</h2>
+    <div class="prose">${ls.body}</div>
+    ${ls.lab==='prompt'?labPrompt():''}${ls.lab==='risk'?labRisk():''}${ls.lab==='priv'?labPriv():''}${ls.lab==='cost'?labCost():''}
+    ${ls.key?`<div class="key"><b>Idea clave</b>${esc(ls.key)}</div>`:''}
+  </div>
+  <div class="nav2">
+    ${l>0?`<button class="btn alt" data-act="lesson" data-t="${t}" data-l="${l-1}">Anterior</button>`:''}
+    <button class="btn" data-act="finish" data-t="${t}" data-l="${l}">${last?'Terminar lección':'Siguiente'}</button>
+  </div>`;
+}
+function vQuiz(t,lv){
+  const c=COURSE[t]; const Q=ui.quiz; const list=c.qz[lv];
+  if(Q.i>=list.length){
+    const p=Math.round(Q.score/list.length*100);
+    const msg=p>=80?'Excelente.':p>=60?'Aprobado. Repasa los fallos.':'Repasa las lecciones y vuelve a intentarlo.';
+    return `${back('Tema','topic','data-t="'+t+'"')}
+    <div class="card" style="text-align:center"><div class="kicker">Resultado · ${LV[lv]}</div><div class="score">${p}%</div><p style="margin:8px 0 4px"><b>${Q.score} de ${list.length}</b> correctas</p><p class="muted">${msg}</p><p class="chip sun" style="margin-top:12px">+${Q.score*5} XP</p></div>
+    <div class="stack" style="margin-top:16px"><button class="btn" data-act="quiz" data-t="${t}" data-lv="${lv}">Repetir test</button>
+    <button class="btn alt" data-act="topic" data-t="${t}">Volver al tema</button></div>`;
+  }
+  const q=list[Q.i];
+  return `${back('Salir del test','topic','data-t="'+t+'"')}
+  <div class="segs">${list.map((_,i)=>`<i class="${i<=Q.i?'on':''}"></i>`).join('')}</div>
+  <div class="kicker" style="margin-bottom:6px">${LV[lv]} · Pregunta ${Q.i+1} de ${list.length}</div>
+  <h2 style="margin-bottom:16px">${esc(q.q)}</h2>
+  ${q.o.map((o,k)=>{let cls='';if(Q.sel!=null){if(k===q.a)cls='ok';else if(k===Q.sel)cls='ko';}
+    return `<button class="opt ${cls}" data-act="answer" data-k="${k}" ${Q.sel!=null?'disabled':''}>${esc(o)}</button>`;}).join('')}
+  ${Q.sel!=null?`<div class="why"><b style="color:var(--${Q.sel===q.a?'good':'bad'})">${Q.sel===q.a?'Correcto.':'Incorrecto.'}</b> ${esc(q.why)}</div>
+  <button class="btn" data-act="qnext" data-t="${t}" data-lv="${lv}">${Q.i===list.length-1?'Ver resultado':'Siguiente'}</button>`:''}`;
+}
+function deckCards(){
+  const d=ui.flash.deck; const out=[];
+  COURSE.forEach((c,t)=>{ if(d==='all'||+d===t) c.cards.forEach((cd,i)=>{ if(ui.flash.lv==='all'||cd[2]===ui.flash.lv) out.push({t,i,f:cd[0],b:cd[1],lv:cd[2],k:c.id+':'+i}); }); });
+  return out;
+}
+function vReview(){
+  const F=ui.flash; const cards=deckCards();
+  const dk=F.deck+'|'+F.lv; if(!F.order||F.order.length!==cards.length||F.orderDeck!==dk){ F.order=shuffle(cards.map((_,i)=>i)); F.orderDeck=dk; F.i=0; F.flipped=false; }
+  const total=cards.length; const known=cards.filter(c=>P.cards[c.k]).length;
+  const cur=cards[F.order[F.i]];
+  const decks=`<div class="decks" role="group" aria-label="Mazo"><button class="deck" aria-pressed="${F.deck==='all'}" data-act="deck" data-deck="all">Todos</button>${COURSE.map((c,t)=>`<button class="deck" aria-pressed="${F.deck==t}" data-act="deck" data-deck="${t}">Tema ${t+1}</button>`).join('')}</div>`;
+  const lvs=`<div class="decks" role="group" aria-label="Nivel">${[['all','Todos los niveles'],['b','Principiante'],['i','Intermedio'],['a','Avanzado']].map(x=>`<button class="deck" aria-pressed="${F.lv===x[0]}" data-act="lvl" data-lv="${x[0]}">${x[1]}</button>`).join('')}</div>`;
+  if(!cur) return `<h2 style="margin-bottom:12px">Repaso</h2>${decks}${lvs}<p class="muted">No hay tarjetas.</p>`;
+  return `<h2 style="margin-bottom:12px">Repaso</h2>${decks}${lvs}
+  <div class="row" style="margin-bottom:10px"><div class="bar grow"><i style="width:${known/total*100}%"></i></div><span class="small muted">${known}/${total} dominadas</span></div>
+  <button class="flip" data-act="flip" aria-label="Girar tarjeta">
+    ${!F.flipped?`<div class="face front"><small>Tema ${cur.t+1} · ${LV[cur.lv]} · toca para girar</small><p>${esc(cur.f)}</p></div>`:`<div class="face back-face"><small style="color:var(--teal)">${esc(cur.f)}</small><p>${esc(cur.b)}</p></div>`}
+  </button>
+  <div class="row" style="margin-top:14px">
+    <button class="btn alt" data-act="again">Repetir</button><button class="btn" data-act="know">Ya la sé</button>
+  </div>
+  <p class="muted small" style="text-align:center;margin-top:10px">Tarjeta ${F.i+1} de ${total}</p>`;
+}
+function buildExam(){
+  const pool=[]; COURSE.forEach((c,t)=>{ const all=shuffle([...c.qz.b,...c.qz.i,...c.qz.a]); all.slice(0,2).forEach(q=>pool.push(Object.assign({t},q))); });
+  return shuffle(pool);
+}
+function vExam(){
+  const E=ui.exam;
+  if(E.i>=E.qs.length){
+    const p=Math.round(E.score/E.qs.length*100), ok=p>=70;
+    return `${back('Inicio','home')}
+    <div class="card" style="text-align:center"><div class="kicker">Examen final</div><div class="score">${p}%</div><p style="margin:8px 0 4px"><b>${E.score} de ${E.qs.length}</b> correctas</p>
+    <p class="muted">${ok?'Aprobado. Has superado el 70 % necesario.':'Necesitas un 70 % para aprobar. Repasa los temas y vuelve a intentarlo.'}</p></div>
+    <div class="stack" style="margin-top:16px">${P.exam>=70?'<button class="btn" data-act="cert">Ver certificado</button>':''}<button class="btn ${P.exam>=70?'alt':''}" data-act="exam">Repetir examen</button></div>`;
+  }
+  const q=E.qs[E.i];
+  return `${back('Salir del examen','home')}
+  <div class="segs">${E.qs.map((_,i)=>`<i class="${i<=E.i?'on':''}"></i>`).join('')}</div>
+  <div class="kicker" style="margin-bottom:6px">Examen final · Tema ${q.t+1} · ${E.i+1} de ${E.qs.length}</div>
+  <h2 style="margin-bottom:16px">${esc(q.q)}</h2>
+  ${q.o.map((o,k)=>{let cls='';if(E.sel!=null){if(k===q.a)cls='ok';else if(k===E.sel)cls='ko';}
+    return `<button class="opt ${cls}" data-act="eanswer" data-k="${k}" ${E.sel!=null?'disabled':''}>${esc(o)}</button>`;}).join('')}
+  ${E.sel!=null?`<div class="why"><b style="color:var(--${E.sel===q.a?'good':'bad'})">${E.sel===q.a?'Correcto.':'Incorrecto.'}</b> ${esc(q.why)}</div>
+  <button class="btn" data-act="enext">${E.i===E.qs.length-1?'Ver resultado':'Siguiente'}</button>`:''}`;
+}
+function vCert(){
+  if(!(P.exam>=70)) return `${back('Inicio','home')}<p>Aprueba el examen final para obtener el certificado.</p>`;
+  const fecha=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  return `${back('Inicio','home')}
+  <label class="field"><span>Tu nombre en el certificado</span><textarea id="cert-name" rows="1" placeholder="Nombre y apellidos">${esc(P.name||'')}</textarea></label>
+  <div class="card" style="border:3px double var(--teal);text-align:center;padding:28px 18px;margin-top:6px">
+    <div class="kicker">Certificado de finalización</div>
+    <p class="muted" style="margin:14px 0 4px">Se certifica que</p>
+    <h1 id="cert-who" style="font-size:28px;margin-bottom:10px">${esc((P.name||'').trim()||'Tu nombre')}</h1>
+    <p>ha completado el curso <b>IA Generativa para el trabajo</b> (9 temas) y ha superado el examen final con un <b>${P.exam} %</b>.</p>
+    <p class="muted small" style="margin-top:14px">${fecha}</p>
+  </div>
+  <p class="muted small" style="margin-top:12px">Para guardarlo, haz una captura de pantalla. Es un certificado informal de este curso, sin validez oficial ni acreditación.</p>`;
+}
+function vProgress(){
+  const qs=COURSE.map(c=>P.quiz[c.id]).filter(x=>x!=null); const avg=qs.length?Math.round(qs.reduce((a,b)=>a+b,0)/qs.length):0;
+  const comp=COURSE.filter((_,i)=>topicComplete(i)).length;
+  return `<h2 style="margin-bottom:12px">Tu progreso</h2>
+  <div class="stats">
+    <div class="stat"><b>${pct()}%</b><span>del curso</span></div>
+    <div class="stat"><b>${P.xp}</b><span>puntos XP</span></div>
+    <div class="stat"><b>${streak()}</b><span>días seguidos</span></div>
+    <div class="stat"><b>${qs.length?avg+'%':'—'}</b><span>media de tests</span></div>
+  </div>
+  <div class="sec-title"><h3>Por tema</h3><span class="muted small">${comp}/9 completados</span></div>
+  <div class="card" style="padding:6px 16px">
+  ${COURSE.map((c,i)=>`<div class="prow"><b style="font-family:var(--display);width:22px;color:var(--teal)">${i+1}</b><div class="grow"><div class="small" style="font-weight:600">${esc(c.short)}</div><div class="bar" style="margin-top:5px"><i style="width:${done(i)/c.lessons.length*100}%"></i></div></div>
+   ${topicComplete(i)?'<span class="chip done">OK</span>':(P.quiz[c.id]!=null?`<span class="chip sun">${P.quiz[c.id]}%</span>`:'<span class="muted small">—</span>')}</div>`).join('')}
+  </div>
+  <div class="stat" style="margin-top:10px"><b>${P.exam!=null?P.exam+'%':'—'}</b><span>examen final${P.exam>=70?' (aprobado)':''}</span></div>
+  <p class="muted small" style="margin-top:14px">Un tema se marca como completado al terminar sus lecciones de los tres niveles y sacar al menos un 60 % en el test principiante. El progreso se guarda en este navegador.</p>
+  <div style="margin-top:16px">${ui.confirmReset?`<div class="row"><button class="btn alt small" data-act="resetno">Cancelar</button><button class="btn small" data-act="resetyes">Sí, borrar progreso</button></div>`:`<button class="btn alt small" data-act="reset">Reiniciar progreso</button>`}</div>`;
+}
+
+/* ============================== RENDER ============================== */
+function render(){
+  const v=ui.view; let h='';
+  if(v.name==='home') h = ui.tab==='review'?vReview(): ui.tab==='progress'?vProgress(): vHome();
+  else if(v.name==='topic') h=vTopic(v.t);
+  else if(v.name==='lesson') h=vLesson(v.t,v.l);
+  else if(v.name==='quiz') h=vQuiz(v.t,v.lv);
+  else if(v.name==='exam') h=vExam();
+  else if(v.name==='cert') h=vCert();
+  $main.innerHTML=h;
+  document.querySelectorAll('nav button').forEach(b=>{ if(b.dataset.tab===ui.tab && v.name==='home') b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
+  if(v.name==='lesson'){ refreshPromptLab(); refreshCostLab(); }
+}
+
+/* ============================== EVENTOS ============================== */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const a=b.dataset.act, t=+b.dataset.t, l=+b.dataset.l;
+  switch(a){
+    case 'tab': ui.tab=b.dataset.tab; ui.confirmReset=false; go({name:'home'}); break;
+    case 'home': ui.tab='home'; go({name:'home'}); break;
+    case 'topic': go({name:'topic',t}); break;
+    case 'lesson': go({name:'lesson',t,l}); break;
+    case 'finish':{
+      const id=COURSE[t].id; const arr=P.lessons[id]||(P.lessons[id]=[]);
+      const first=!arr[l]; arr[l]=true;
+      if(first){ addXp(10); }
+      const last=l===COURSE[t].lessons.length-1;
+      if(last){ toast(first?'Lección completada · +10 XP':'Lección completada'); go({name:'topic',t}); }
+      else go({name:'lesson',t,l:l+1});
+      save(); break; }
+    case 'quiz': ui.quiz={i:0,sel:null,score:0}; go({name:'quiz',t,lv:b.dataset.lv||'b'}); break;
+    case 'answer':{
+      const k=+b.dataset.k, q=COURSE[ui.view.t].qz[ui.view.lv][ui.quiz.i];
+      if(ui.quiz.sel!=null) break;
+      ui.quiz.sel=k; if(k===q.a) ui.quiz.score++;
+      render(); break; }
+    case 'qnext':{
+      ui.quiz.i++; ui.quiz.sel=null;
+      const c=COURSE[t]; const lv=b.dataset.lv||'b'; const key=qkey(c,lv);
+      if(ui.quiz.i>=c.qz[lv].length){
+        const p=Math.round(ui.quiz.score/c.qz[lv].length*100);
+        P.quiz[key]=Math.max(P.quiz[key]||0,p); addXp(ui.quiz.score*5);
+      }
+      render(); $main.scrollTop=0; break; }
+    case 'risk':{ const S=ui.lab[b.dataset.n]||(ui.lab[b.dataset.n]={}); const i=+b.dataset.i; if(S[i]==null){ S[i]=+b.dataset.k; render(); } break; }
+    case 'copyprompt':{
+      const txt=promptText(); if(!txt){ toast('Escribe algo primero'); break; }
+      try{ navigator.clipboard.writeText(txt).then(()=>toast('Prompt copiado'),()=>toast('No se pudo copiar')); }catch(err){ toast('No se pudo copiar'); }
+      break; }
+    case 'deck': ui.tab='review'; ui.flash.deck=b.dataset.deck; ui.flash.order=null; go({name:'home'}); break;
+    case 'lvl': ui.flash.lv=b.dataset.lv; ui.flash.order=null; render(); break;
+    case 'flip': ui.flash.flipped=!ui.flash.flipped; render(); break;
+    case 'again': case 'know':{
+      const cards=deckCards(); const F=ui.flash; const cur=cards[F.order[F.i]];
+      if(cur){ if(a==='know'){ if(!P.cards[cur.k]){ P.cards[cur.k]=1; addXp(2);} } else delete P.cards[cur.k]; save(); }
+      F.i=(F.i+1)%F.order.length; F.flipped=false; render(); break; }
+    case 'exam': ui.exam={qs:buildExam(),i:0,sel:null,score:0}; go({name:'exam'}); break;
+    case 'eanswer':{ const E=ui.exam; if(E.sel!=null) break; E.sel=+b.dataset.k; if(E.sel===E.qs[E.i].a) E.score++; render(); break; }
+    case 'enext':{
+      const E=ui.exam; E.i++; E.sel=null;
+      if(E.i>=E.qs.length){ const p=Math.round(E.score/E.qs.length*100); const first=!(P.exam>=70)&&p>=70; P.exam=Math.max(P.exam||0,p); if(first) addXp(50); else save(); }
+      render(); $main.scrollTop=0; break; }
+    case 'cert': go({name:'cert'}); break;
+    case 'reset': ui.confirmReset=true; render(); break;
+    case 'resetno': ui.confirmReset=false; render(); break;
+    case 'resetyes': P={lessons:{},quiz:{},cards:{},xp:0,days:[]}; save(); ui.confirmReset=false; render(); toast('Progreso reiniciado'); break;
+  }
+});
+document.addEventListener('input',e=>{
+  const ck=e.target.dataset&&e.target.dataset.cost;
+  if(ck){ ui.lab.cost[ck]=+e.target.value; refreshCostLab(); return; }
+  if(e.target.id==='cert-name'){ P.name=e.target.value.slice(0,60); save(); const n=document.getElementById('cert-who'); if(n) n.textContent=P.name.trim()||'Tu nombre'; return; }
+  const k=e.target.dataset&&e.target.dataset.lab; if(!k) return;
+  (ui.lab.prompt||(ui.lab.prompt={}))[k]=e.target.value; refreshPromptLab();
+});
+render();
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); }); }
+</script>
+</body>
+</html>
